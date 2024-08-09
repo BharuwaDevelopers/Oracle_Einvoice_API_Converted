@@ -64,7 +64,7 @@ public class CanEinvoice {
                         CancelRoot obj = value2;
 
                         // SqlConnectionDB.CancelInesrtData(obj, dt);
-                        OracelDataInsert.InsertCancelDataOracle(obj, dt);
+                        OracleDataInsert.InsertCancelDataOracle(obj, dt);
                         if (!value2.results.errorMessage.isEmpty()) {
                             // error update
                         } else {

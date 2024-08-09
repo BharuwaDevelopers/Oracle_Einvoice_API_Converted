@@ -63,7 +63,7 @@ public class EwaybillByIrn {
                             InvResult = response;
                             ObjectMapper objectMapper = new ObjectMapper();
                             SuccessEwbByIrn value2 = objectMapper.readValue(response, SuccessEwbByIrn.class);
-                            OracelDataInsert.UpdateEWBByIRNNO(value2, dt);
+                        OracleDataInsert.UpdateEWBByIRNNO(value2, dt);
                         } catch (Exception ex) {
                             try {
                                 ObjectMapper objectMapper = new ObjectMapper();

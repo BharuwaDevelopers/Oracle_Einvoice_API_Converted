@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class OracelDataInsert {
+public class OracleDataInsert {
     
     public static void updateDataOracle(INVRootObject obj, DataTable dt) {
            try {

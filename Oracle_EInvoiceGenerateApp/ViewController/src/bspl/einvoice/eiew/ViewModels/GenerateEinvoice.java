@@ -90,10 +90,10 @@ public class GenerateEinvoice {
                            INVRootObject value2 = new Gson().fromJson(jsonObject, INVRootObject.class);
 
                            if (value2.getResults().getCode() == 200) {
-                               OracelDataInsert.updateDataOracle(value2, dt);
+                        OracleDataInsert.updateDataOracle(value2, dt);
                                invResDecData.complete("1");
                            } else {
-                               OracelDataInsert.updateDataOracle(value2, dt);
+                        OracleDataInsert.updateDataOracle(value2, dt);
                                invResDecData.complete(response);
                            }
                        } else {
