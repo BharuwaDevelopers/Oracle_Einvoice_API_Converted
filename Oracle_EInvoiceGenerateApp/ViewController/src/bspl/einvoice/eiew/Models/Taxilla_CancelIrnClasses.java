@@ -1,15 +1,15 @@
 package bspl.einvoice.eiew.Models;
 
+import java.sql.ResultSet;
+
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Taxilla_CancelIrnClasses {
     
-    Note: The `DataTable` class is not a standard Java class. You might need to implement or use an equivalent class to handle the data table operations.
-
-
-    public static String CancelJsonFile(DataTable dt, String irn, String token, String CanCode) {
+  
+    public static String CancelJsonFile(ResultSet dt, String irn, String token, String CanCode) {
         String JsTest = "";
         String msg = "", CanRemarks = "";
         if (CanCode.equals("1"))

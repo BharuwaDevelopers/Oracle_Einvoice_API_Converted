@@ -9,13 +9,14 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class TaxillaEwaybillAPI {
 
-    public static CompletableFuture<String> EwayAccessToken(DataTable dt) {
+    public static CompletableFuture<String> EwayAccessToken(ResultSet dt) {
         String InvResult = "";
         try {
             String URL = Taxilla_API_Urls.AuthApi;
@@ -47,7 +48,7 @@ public class TaxillaEwaybillAPI {
         }
     }
 
-    public static CompletableFuture<String> GenerateEwayBill(DataTable dt, String jsonfile, String RequestId, String type, String auth) {
+    public static CompletableFuture<String> GenerateEwayBill(ResultSet dt, String jsonfile, String RequestId, String type, String auth) {
         String InvResult = "";
         try {
             String URL = Taxilla_API_Urls.GenEwaybillApi;
@@ -92,7 +93,7 @@ public class TaxillaEwaybillAPI {
         return CompletableFuture.completedFuture(InvResult);
     }
 
-    public static CompletableFuture<String> GenEwayBill(DataTable dt, String jsonfile, String RequestId, String type, String auth) {
+    public static CompletableFuture<String> GenEwayBill(ResultSet dt, String jsonfile, String RequestId, String type, String auth) {
         String InvResult = "";
         try {
             String URL = Taxilla_API_Urls.GenEwaybillApi;
@@ -140,7 +141,7 @@ public class TaxillaEwaybillAPI {
         return CompletableFuture.completedFuture(InvResult);
     }
 
-    public static CompletableFuture<String> CancelEwayBill(DataTable dt, String jsonfile, String RequestId, String type, String auth) {
+    public static CompletableFuture<String> CancelEwayBill(ResultSet dt, String jsonfile, String RequestId, String type, String auth) {
         String InvResult = "", InvResDecData = "";
         try {
             String URL = Taxilla_API_Urls.CANEWBApi;

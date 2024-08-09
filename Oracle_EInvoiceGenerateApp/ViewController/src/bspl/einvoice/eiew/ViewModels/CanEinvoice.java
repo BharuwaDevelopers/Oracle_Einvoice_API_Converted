@@ -12,6 +12,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -20,7 +21,7 @@ import org.json.JSONObject;
 
 public class CanEinvoice {
 
-    public static String CancelJsonFile(DataTable dt, String irn, String token) {
+    public static String CancelJsonFile(ResultSet dt, String irn, String token) {
         String JsTest = "";
         try {
             CancelRootObject Calceljson = new CancelRootObject();
@@ -40,7 +41,7 @@ public class CanEinvoice {
         return JsTest;
     }
 
-    public static CompletableFuture<String> CancelInvoice(String JsonFile, String sekdec, DataTable dt) {
+    public static CompletableFuture<String> CancelInvoice(String JsonFile, String sekdec, ResultSet dt) {
         String InvRData = "";
         String InvResult = "";
         String ErrorMsg = "";

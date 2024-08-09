@@ -16,7 +16,7 @@ public class Taxilla_EWBGetData {
             sqlstr = "SELECT DISTINCT EWAY_USERNAME, EWAY_PASSWORD, EWAY_CLIENT_ID, EWAY_CLIENT_SECRET, EWAYBILL_GST, EWAY_CLIENT_USERNAME, EWAY_CLIENT_PASSWORD FROM unit";
         }
 
-        try (Connection conn = OraDBConnection.getOrclConnection();
+        try (Connection conn = OraDBConnection.OrclConnection();
              PreparedStatement pstmt = conn.prepareStatement(sqlstr)) {
             if (!EINVType.equals("NUSER") && !EINVType.equals("BULK_EWB")) {
                 pstmt.setString(1, SessionID);

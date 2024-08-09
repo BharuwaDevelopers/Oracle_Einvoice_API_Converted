@@ -14,9 +14,11 @@ import java.util.Map;
 import org.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.sql.ResultSet;
+
 public class GetAccessToken {
 
-    public static String Einvoice_API_Login(DataTable dt) {
+    public static String Einvoice_API_Login(ResultSet dt) {
         String InvResult = "";
         try {
             String URL = All_API_Urls.EinvLoginUrl;
@@ -51,7 +53,7 @@ public class GetAccessToken {
         }
     }
 
-    public static String GetJsonAuthentication_API(DataTable dt) {
+    public static String GetJsonAuthentication_API(ResultSet dt) {
         Authentication_API Authentication_APIobj = new Authentication_API();
         Authentication_APIobj.setUsername(dt.getRows().get(0).get("EINVUSERNAME").toString());
         Authentication_APIobj.setPassword(dt.getRows().get(0).get("EINVPASSWORD").toString());
@@ -149,7 +151,7 @@ public class GetAccessToken {
     }
 
     // Dummy DataTable class to simulate the DataTable in C#
-    public static class DataTable {
+    public static class ResultSet {
         private java.util.List<Map<String, Object>> rows = new java.util.ArrayList<>();
 
         public java.util.List<Map<String, Object>> getRows() {

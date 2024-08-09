@@ -3,13 +3,14 @@ package bspl.einvoice.eiew.ViewModels;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class OracleDataInsert {
     
-    public static void updateDataOracle(INVRootObject obj, DataTable dt) {
+    public static void updateDataOracle(INVRootObject obj, ResultSet dt) {
            try {
                if (obj.getResults().getCode() != 200) {
                    String commandText = "UPDATE einvoice_generate_temp SET ERRORMSG=? WHERE DOC_NO = ?";
@@ -86,7 +87,7 @@ public class OracleDataInsert {
            }
        }
 
-       public static void insertDataOracle(INVRootObject obj, DataTable dt) {
+       public static void insertDataOracle(INVRootObject obj, ResultSet dt) {
            try {
                if (obj.getResults().getCode() != 200) {
                    String commandText = "UPDATE einvoice_generate_temp SET ERRORMSG=? WHERE DOC_NO = ?";
@@ -123,7 +124,7 @@ public class OracleDataInsert {
            }
        }
 
-       public static void insertCancelDataOracle(CancelRoot obj, DataTable dt) {
+       public static void insertCancelDataOracle(CancelRoot obj, ResultSet dt) {
            try {
                if (!obj.getResults().getStatus().equals("200")) {
                    Date date = new Date();
@@ -170,7 +171,7 @@ public class OracleDataInsert {
            }
        }
 
-       public static void updateEWBByIRNNO(SuccessEwbByIrn obj, DataTable dt) {
+       public static void updateEWBByIRNNO(SuccessEwbByIrn obj, ResultSet dt) {
            try {
                if (obj.getResults().getCode() != 200) {
                    String commandText = "UPDATE einvoice_generate_temp SET ERRORMSG=? WHERE DOC_NO = ?";

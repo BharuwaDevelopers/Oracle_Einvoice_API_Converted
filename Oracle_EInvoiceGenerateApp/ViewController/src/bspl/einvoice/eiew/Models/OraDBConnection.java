@@ -7,13 +7,13 @@ public class OraDBConnection {
     static String password = "";
     static String dataSource = "";
 
-    public static void setConnectionData(String userId, String pwd, String dataSource) {
+    public static void SetConnectiondata(String userId, String pwd, String dataSource) {
         OraDBConnection.userId = userId;
         OraDBConnection.password = pwd;
         OraDBConnection.dataSource = dataSource;
     }
 
-    public static String getOrclConnection() {
+    public static String OrclConnection() {
         String oraConn = "User Id=" + userId + ";Password=" + password + ";" + "Data source=" + dataSource;
         // String oraConn = "User Id=FINANCE;Password=" + password + ";" + "Data source=" + dataSource + "";
         // String oraConn = "User Id=FINANCE;Password=Fin;" + "Data source=192.168.1.13:1521/KUMA";

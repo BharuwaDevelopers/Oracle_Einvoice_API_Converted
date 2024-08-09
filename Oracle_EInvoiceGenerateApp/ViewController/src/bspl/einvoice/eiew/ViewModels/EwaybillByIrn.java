@@ -14,8 +14,10 @@ import java.net.http.HttpResponse.BodyHandlers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import java.sql.ResultSet;
+
 public class EwaybillByIrn {
-    public static String Generate_EwaybillIrn_Json(DataTable dt, String sessionId, String access_token) {
+    public static String Generate_EwaybillIrn_Json(ResultSet dt, String sessionId, String access_token) {
         String msg = "";
         try {
             List<e_waybillIrnBO> ewaybillIrn_obj = new ArrayList<>();
@@ -44,7 +46,7 @@ public class EwaybillByIrn {
         }
     }
 
-    public static CompletableFuture<String> Generate_EwaybillIrn(String JsonFile, String sekdec, DataTable dt, String Type) {
+    public static CompletableFuture<String> Generate_EwaybillIrn(String JsonFile, String sekdec, ResultSet dt, String Type) {
         CompletableFuture<String> future = new CompletableFuture<>();
         String InvResult = "", InvRData = "";
         HttpClient client = HttpClient.newHttpClient();

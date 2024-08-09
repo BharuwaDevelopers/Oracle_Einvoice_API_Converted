@@ -239,7 +239,7 @@ public class GenerateEinvoice {
            return lstpredocdtl;
        }
        
-    public static List<ContractDetail> getContractDetail(DataTable dt) {
+    public static List<ContractDetail> getContractDetail(ResultSet dt) {
           List<ContractDetail> lstcontractdtl = new ArrayList<>();
           for (int i = 0; i < dt.getRows().size(); i++) {
               lstcontractdtl.add(new ContractDetail(
@@ -256,7 +256,7 @@ public class GenerateEinvoice {
           return lstcontractdtl;
       }
 
-      public static ValueDetails getValueDetails(DataTable dt) {
+      public static ValueDetails getValueDetails(ResultSet dt) {
           ValueDetails referenceDetails = new ValueDetails(
               Double.parseDouble(dt.getRows().get(0).get("VAL_ASSVAL").toString().isEmpty() ? "0" : dt.getRows().get(0).get("VAL_ASSVAL").toString()),
               Double.parseDouble(dt.getRows().get(0).get("VAL_CGSTVAL").toString().isEmpty() ? "0" : dt.getRows().get(0).get("VAL_CGSTVAL").toString()),
@@ -273,7 +273,7 @@ public class GenerateEinvoice {
           return referenceDetails;
       }
 
-      public static List<ItemList> getItemList(DataTable dt) {
+      public static List<ItemList> getItemList(ResultSet dt) {
           List<ItemList> itm = new ArrayList<>();
           for (int i = 0; i < dt.getRows().size(); i++) {
               itm.add(new ItemList(
@@ -316,7 +316,7 @@ public class GenerateEinvoice {
           return itm;
       }
 
-      public static List<AttributeDetail> getAttributeDetails(DataTable dt) {
+      public static List<AttributeDetail> getAttributeDetails(ResultSet dt) {
           List<AttributeDetail> lstattrdtl = new ArrayList<>();
           lstattrdtl.add(new AttributeDetail(
               dt.getRows().get(0).get("ITEM_ATTRIBUTE_DETAILS").toString().isEmpty() ? "Testing" : dt.getRows().get(0).get("ITEM_ATTRIBUTE_DETAILS").toString(),
@@ -325,7 +325,7 @@ public class GenerateEinvoice {
           return lstattrdtl;
       }
 
-      public static List<AdditionalDocumentDetail> getAdditionalDocument(DataTable dt) {
+      public static List<AdditionalDocumentDetail> getAdditionalDocument(ResultSet dt) {
           List<AdditionalDocumentDetail> lstAddDocDtl = new ArrayList<>();
           for (int i = 0; i < dt.getRows().size(); i++) {
               lstAddDocDtl.add(new AdditionalDocumentDetail(
@@ -337,7 +337,7 @@ public class GenerateEinvoice {
           return lstAddDocDtl;
       }
 
-      public static EwaybillDetails getEwaybillDetails(DataTable dt) {
+      public static EwaybillDetails getEwaybillDetails(ResultSet dt) {
           EwaybillDetails ewaybillDetails = new EwaybillDetails(
               dt.getRows().get(0).get("EWAY_TRANSPORTAR_ID").toString(),
               dt.getRows().get(0).get("EWAY_TRANSPORTAR_NAME").toString(),

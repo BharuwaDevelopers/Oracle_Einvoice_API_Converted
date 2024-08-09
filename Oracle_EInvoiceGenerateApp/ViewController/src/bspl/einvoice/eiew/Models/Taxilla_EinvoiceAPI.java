@@ -30,9 +30,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.sql.ResultSet;
+
 public class Taxilla_EinvoiceAPI {
    
-    public static CompletableFuture<String> accessToken(DataTable dt) {
+    public static CompletableFuture<String> accessToken(ResultSet dt) {
            return CompletableFuture.supplyAsync(() -> {
                String invResult = "";
                try {
@@ -69,7 +71,7 @@ public class Taxilla_EinvoiceAPI {
            });
        }
 
-       public static CompletableFuture<String> generateIrn(DataTable dt, String jsonFile, String requestId, String sessionId, String auth, String einvewb) {
+       public static CompletableFuture<String> generateIrn(ResultSet dt, String jsonFile, String requestId, String sessionId, String auth, String einvewb) {
            return CompletableFuture.supplyAsync(() -> {
                String invResult = "";
                String respResult = "";
@@ -198,7 +200,7 @@ public class Taxilla_EinvoiceAPI {
            });
        }
 
-       public static CompletableFuture<String> cancelInvoice(DataTable dt, String jsonFile, String requestId, String type, String auth) {
+       public static CompletableFuture<String> cancelInvoice(ResultSet dt, String jsonFile, String requestId, String type, String auth) {
            return CompletableFuture.supplyAsync(() -> {
                String invRData = "";
                String invResult = "";
@@ -243,7 +245,7 @@ public class Taxilla_EinvoiceAPI {
            });
        }
 
-       public static CompletableFuture<String> detailInvoiceByIrn(DataTable dt, String irnNo, String requestId, String type, String auth) {
+       public static CompletableFuture<String> detailInvoiceByIrn(ResultSet dt, String irnNo, String requestId, String type, String auth) {
            return CompletableFuture.supplyAsync(() -> {
                String invRData = "";
                String invResult = "";
@@ -281,7 +283,7 @@ public class Taxilla_EinvoiceAPI {
            });
        }
        
-    public static CompletableFuture<String> generateEwaybillIrn(DataTable dt, String jsonfile, String requestId, String sessionId, String auth) {
+    public static CompletableFuture<String> generateEwaybillIrn(ResultSet dt, String jsonfile, String requestId, String sessionId, String auth) {
            String invRData = "";
            String invResult = "";
 
@@ -339,7 +341,7 @@ public class Taxilla_EinvoiceAPI {
            }
        }
 
-       public static CompletableFuture<String> getEwaybillByIrn(DataTable dt, String irnNo, String requestId, String type, String auth) {
+       public static CompletableFuture<String> getEwaybillByIrn(ResultSet dt, String irnNo, String requestId, String type, String auth) {
            String invRData = "";
            String invResult = "";
 
@@ -387,7 +389,7 @@ public class Taxilla_EinvoiceAPI {
            }
        }
 
-       public static CompletableFuture<String> cancelEwaybill(DataTable dt, String jsonfile, String requestId, String type, String auth) {
+       public static CompletableFuture<String> cancelEwaybill(ResultSet dt, String jsonfile, String requestId, String type, String auth) {
            String invRData = "";
            String invResult = "";
 
@@ -436,7 +438,7 @@ public class Taxilla_EinvoiceAPI {
            }
        }
 
-       public static CompletableFuture<String> extractQRCode(DataTable dt, String jsonfile, String requestId, String type, String auth) {
+       public static CompletableFuture<String> extractQRCode(ResultSet dt, String jsonfile, String requestId, String type, String auth) {
            String invRData = "";
            String invResult = "";
 
@@ -470,7 +472,7 @@ public class Taxilla_EinvoiceAPI {
            }
        }
 
-       public static CompletableFuture<String> extractSignedInvoice(DataTable dt, String jsonfile, String requestId, String type, String auth) {
+       public static CompletableFuture<String> extractSignedInvoice(ResultSet dt, String jsonfile, String requestId, String type, String auth) {
            String invRData = "";
            String invResult = "";
 
@@ -504,7 +506,7 @@ public class Taxilla_EinvoiceAPI {
            }
        }
 
-       public static CompletableFuture<String> generateQRImage(DataTable dt, String jsonfile, String requestId, String type, String auth) {
+       public static CompletableFuture<String> generateQRImage(ResultSet dt, String jsonfile, String requestId, String type, String auth) {
            String invRData = "";
            String invResult = "";
 
@@ -548,7 +550,7 @@ public class Taxilla_EinvoiceAPI {
        }
        
        
-    public static CompletableFuture<String> getQRImage(DataTable dt, String jsonfile, String requestId, String type, String auth) {
+    public static CompletableFuture<String> getQRImage(ResultSet dt, String jsonfile, String requestId, String type, String auth) {
            String invRData = "";
            String invResult = "";
            try {
