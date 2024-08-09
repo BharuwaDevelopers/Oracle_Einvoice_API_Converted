@@ -6,8 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 
-public class Taxilla_OracelDataInsert {
-    public Taxilla_OracelDataInsert() {
+public class Taxilla_OracleDataInsert {
+    public Taxilla_OracleDataInsert() {
         super();
     }
     
