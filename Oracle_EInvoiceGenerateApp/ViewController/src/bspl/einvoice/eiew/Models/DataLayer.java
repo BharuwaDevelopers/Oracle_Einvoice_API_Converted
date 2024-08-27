@@ -10,13 +10,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.text.Document;
+
 
 public class DataLayer {
     public DataLayer() {
         super();
     }
     
-    public static int arrayBindBulkInsert(String connString, String spName, int bindSize, OracleParameter... parameters) {
+    public static int ArrayBindBulkInsert(String connString, String spName, int bindSize, OracleParameter... parameters) {
            try (Connection conn = DriverManager.getConnection(connString)) {
                int result = 0;
                PreparedStatement cmd = conn.prepareStatement(spName);
@@ -32,8 +34,6 @@ public class DataLayer {
            }
        }
 
-       public DataLayer() {
-       }
 
        private static void attachParameters(PreparedStatement command, OracleParameter[] commandParameters) throws SQLException {
            for (OracleParameter p : commandParameters) {
@@ -62,7 +62,6 @@ public class DataLayer {
            if (connection.isClosed()) {
                connection.setAutoCommit(false);
            }
-
            command.setConnection(connection);
            command.setCommandText(commandText);
 
@@ -508,9 +507,9 @@ public class DataLayer {
                // Implementation of prepareCommand method
            }
 
-           private static void assignParameterValues(OracleParameter[] commandParameters, Object... parameterValues) {
-               // Implementation of assignParameterValues method
-           }
+//           private static void assignParameterValues(OracleParameter[] commandParameters, Object... parameterValues) {
+//               // Implementation of assignParameterValues method
+//           }
 
            private static ResultSet executeReader(Connection connection, OracleTransaction transaction, int commandType, String commandText, OracleParameter[] commandParameters, OracleConnectionOwnership ownership) {
                // Implementation of executeReader method
@@ -559,22 +558,22 @@ public class DataLayer {
            }
         }
 
-        class OracleConnectionOwnership {
-           public static final OracleConnectionOwnership Internal = new OracleConnectionOwnership();
-           public static final OracleConnectionOwnership External = new OracleConnectionOwnership();
-        }
+//        class OracleConnectionOwnership {
+//           public static final OracleConnectionOwnership Internal = new OracleConnectionOwnership();
+//           public static final OracleConnectionOwnership External = new OracleConnectionOwnership();
+//        }
 
-        class DataLayerParameterCache {
-           public static OracleParameter[] getSpParameterSet(String connectionString, String spName) {
-               // Implementation of getSpParameterSet method
-               return null;
-           }
-        }
+//        class DataLayerParameterCache {
+//           public static OracleParameter[] getSpParameterSet(String connectionString, String spName) {
+//               // Implementation of getSpParameterSet method
+//               return null;
+//           }
+//        }
 
-        class CommandType {
-           public static final int StoredProcedure = 1;
-           // Other command types
-        }
+//        class CommandType {
+//           public static final int StoredProcedure = 1;
+//           // Other command types
+//        }
 
         class XmlReader {
            private Document document;
@@ -621,17 +620,17 @@ public class DataLayer {
        TEXT, STORED_PROCEDURE
     }
 
-    class OracleTransaction {
-       private Connection connection;
+//    class OracleTransaction {
+//       private Connection connection;
+//
+//       public OracleTransaction(Connection connection) {
+//           this.connection = connection;
+//       }
 
-       public OracleTransaction(Connection connection) {
-           this.connection = connection;
-       }
-
-       public Connection getConnection() {
-           return connection;
-       }
-    }
+//       public Connection getConnection() {
+//           return connection;
+//       }
+//    }
 
     enum OracleConnectionOwnership {
        INTERNAL, EXTERNAL

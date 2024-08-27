@@ -74,7 +74,7 @@ public class ClsDynamic {
         String rval = "";
         String dQuote = "'";
         String sqlStr = "update einvoice_generate_temp set ERRORMSG='" + errorData.replace(dQuote, "") + "' where DOC_NO='" + docNo + "'";
-        int i = DataLayer.executeNonQuery(OraDBConnection.getOrclConnection(), sqlStr);
+        int i = DataLayer.executeNonQuery(OraDBConnection.OrclConnection(), sqlStr);
         return rval = Integer.toString(i);
     }
 }

@@ -3,9 +3,7 @@ package bspl.einvoice.eiew.Models;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,8 +23,8 @@ public class TaxillaEwaybillAPI {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(URL))
                     .header("Content-Type", "application/json")
-                    .header("gspappid", dt.getRows().get(0).get("EINVUSERNAME").toString())
-                    .header("gspappsecret", dt.getRows().get(0).get("EINVPASSWORD").toString())
+                    .header("gspappid", dt.getString("EINVUSERNAME").toString())
+                    .header("gspappsecret", dt.getString("EINVPASSWORD").toString())
                     .POST(HttpRequest.BodyPublishers.ofString(jsonstring, StandardCharsets.UTF_8))
                     .build();
 
@@ -56,9 +54,9 @@ public class TaxillaEwaybillAPI {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(URL))
                     .header("Content-Type", "application/json")
-                    .header("username", dt.getRows().get(0).get("EFUSERNAME").toString())
-                    .header("password", dt.getRows().get(0).get("EFPASSWORD").toString())
-                    .header("gstin", dt.getRows().get(0).get("GSTIN").toString())
+                    .header("username", dt.getString(0).get("EFUSERNAME").toString())
+                    .header("password", dt.getString("EFPASSWORD").toString())
+                    .header("gstin", dt.getString("GSTIN").toString())
                     .header("requestid", RequestId)
                     .header("Authorization", "Bearer " + auth)
                     .POST(HttpRequest.BodyPublishers.ofString(jsonfile, StandardCharsets.UTF_8))
@@ -70,24 +68,24 @@ public class TaxillaEwaybillAPI {
                 EwaySuccessRoot value2 = new ObjectMapper().readValue(response.body(), EwaySuccessRoot.class);
                 if (value2.success) {
                     String commandText = "UPDATE EWB_GEN_STD SET EWAY_BILL_NO=?, EWAY_BILL_DATE=?, PDF_URL=?, ERRORMSG=? WHERE DOCNO=?";
-                    try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection);
+                    try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection());
                          PreparedStatement command = connection.prepareStatement(commandText)) {
                         command.setString(1, value2.result.ewayBillNo);
                         command.setString(2, value2.result.ewayBillDate);
                         command.setString(3, value2.message);
                         command.setString(4, value2.result.alert);
-                        command.setString(5, dt.getRows().get(0).get("DOCNO").toString());
+                        command.setString(5, dt.getString("DOCNO").toString());
                         int rowsAffected = command.executeUpdate();
                         InvResult = "1";
                     }
                 } else {
-                    String sqlstr = "update EWB_GEN_STD set ERRORMSG='" + InvResult + "' where id='" + dt.getRows().get(0).get("ID").toString() + "' and DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-                    int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection, CommandType.TEXT, sqlstr);
+                    String sqlstr = "update EWB_GEN_STD set ERRORMSG='" + InvResult + "' where id='" + dt.getString("ID").toString() + "' and DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
+                    int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection(), CommandType.TEXT, sqlstr);
                 }
             }
         } catch (Exception ex) {
-            String sqlstr = "update EWB_GEN_STD set ERRORMSG='" + InvResult + "' where id='" + dt.getRows().get(0).get("ID").toString() + "' and DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-            int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection, CommandType.TEXT, sqlstr);
+            String sqlstr = "update EWB_GEN_STD set ERRORMSG='" + InvResult + "' where id='" + dt.getString("ID").toString() + "' and DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
+            int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection(), CommandType.TEXT, sqlstr);
             InvResult = ex.getMessage();
         }
         return CompletableFuture.completedFuture(InvResult);
@@ -101,9 +99,9 @@ public class TaxillaEwaybillAPI {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(URL))
                     .header("Content-Type", "application/json")
-                    .header("username", dt.getRows().get(0).get("EINVUSERNAME").toString())
-                    .header("password", dt.getRows().get(0).get("EINVPASSWORD").toString())
-                    .header("gstin", dt.getRows().get(0).get("GSTIN").toString())
+                    .header("username", dt.getString("EINVUSERNAME").toString())
+                    .header("password", dt.getString("EINVPASSWORD").toString())
+                    .header("gstin", dt.getString("GSTIN").toString())
                     .header("requestid", RequestId)
                     .header("Authorization", "Bearer " + auth)
                     .POST(HttpRequest.BodyPublishers.ofString(jsonfile, StandardCharsets.UTF_8))
@@ -112,30 +110,30 @@ public class TaxillaEwaybillAPI {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 InvResult = response.body();
-                ClsDynamic.WriteLog(InvResult, "EWB_" + dt.getRows().get(0).get("DOC_NO").toString());
+                ClsDynamic.WriteLog(InvResult, "EWB_" + dt.getString("DOC_NO").toString());
                 EwaySuccessRoot value2 = new ObjectMapper().readValue(response.body(), EwaySuccessRoot.class);
                 if (value2.success) {
                     String commandText = "UPDATE einvoice_generate_temp SET EWBNO=?, EWBDT=?, EWBVALIDTILL=?, ERRORMSG=? WHERE DOC_NO=?";
-                    try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection);
+                    try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection());
                          PreparedStatement command = connection.prepareStatement(commandText)) {
                         command.setString(1, value2.result.ewayBillNo);
                         command.setString(2, value2.result.ewayBillDate);
                         command.setString(3, value2.result.validUpto);
                         command.setString(4, value2.result.alert);
-                        command.setString(5, dt.getRows().get(0).get("DOC_NO").toString());
+                        command.setString(5, dt.getString("DOC_NO").toString());
                         int rowsAffected = command.executeUpdate();
                         InvResult = "1";
                     }
                 } else {
                     String sqlstr = "update einvoice_generate_temp set ERRORMSG='" + InvResult + "' where id='" + dt.getRows().get(0).get("ID").toString() + "' and DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-                    int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection, CommandType.TEXT, sqlstr);
+                    int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection(), CommandType.TEXT, sqlstr);
                 }
             } else {
                 InvResult = response.toString();
             }
         } catch (Exception ex) {
             String sqlstr = "update einvoice_generate_temp set ERRORMSG='" + InvResult + "' where id='" + dt.getRows().get(0).get("ID").toString() + "' and DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-            int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection, CommandType.TEXT, sqlstr);
+            int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection(), CommandType.TEXT, sqlstr);
             InvResult = ex.getMessage();
         }
         return CompletableFuture.completedFuture(InvResult);
@@ -149,9 +147,9 @@ public class TaxillaEwaybillAPI {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(URL))
                     .header("Content-Type", "application/json")
-                    .header("username", dt.getRows().get(0).get("EINVUSERNAME").toString())
-                    .header("password", dt.getRows().get(0).get("EINVPASSWORD").toString())
-                    .header("gstin", dt.getRows().get(0).get("GSTIN").toString())
+                    .header("username", dt.getString("EINVUSERNAME").toString())
+                    .header("password", dt.getString("EINVPASSWORD").toString())
+                    .header("gstin", dt.getString("GSTIN").toString())
                     .header("requestid", RequestId)
                     .header("Authorization", "Bearer " + auth)
                     .POST(HttpRequest.BodyPublishers.ofString(jsonfile, StandardCharsets.UTF_8))
@@ -163,14 +161,14 @@ public class TaxillaEwaybillAPI {
                 CanEwaybillSuccessRoot value2 = new ObjectMapper().readValue(response.body(), CanEwaybillSuccessRoot.class);
                 if (value2.success) {
                     String sqlstr = "update einvoice_generate set EWBDT='" + value2.result.cancelDate + "', STATUS='EWBCAN' where DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-                    int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection, CommandType.TEXT, sqlstr);
+                    int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection(), CommandType.TEXT, sqlstr);
                     InvResult = "1";
                 }
             }
             return CompletableFuture.completedFuture(InvResult);
         } catch (Exception ex) {
             String sqlstr = "update einvoice_generate set ERRORMSG='" + InvResult + "' where DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-            int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection, CommandType.TEXT, sqlstr);
+            int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection(), CommandType.TEXT, sqlstr);
             return CompletableFuture.completedFuture(ex.getMessage());
         }
     }

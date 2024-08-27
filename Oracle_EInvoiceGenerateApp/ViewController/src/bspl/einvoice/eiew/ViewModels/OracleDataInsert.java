@@ -1,5 +1,8 @@
 package bspl.einvoice.eiew.ViewModels;
 
+import bspl.einvoice.eiew.Models.OraDBConnection;
+import bspl.einvoice.eiew.ViewModels.GenerateEinvoice.*;
+import bspl.einvoice.eiew.ViewModels.CanEinvoice.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,47 +11,48 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 public class OracleDataInsert {
     
-    public static void updateDataOracle(INVRootObject obj, ResultSet dt) {
+    public void updateDataOracle(INVRootObject obj, ResultSet dt) {
            try {
                if (obj.getResults().getCode() != 200) {
                    String commandText = "UPDATE einvoice_generate_temp SET ERRORMSG=? WHERE DOC_NO = ?";
-                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection)) {
+                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection())) {
                        PreparedStatement command = connection.prepareStatement(commandText);
 
                        command.setString(1, obj.getResults().getErrorMessage());
-                       command.setString(2, dt.getRows().get(0).get("DOC_No").toString());
+                       command.setString(2, dt.getString("DOC_No").toString());
 
                        int rowsAffected = command.executeUpdate();
                    }
 
                    String commandText1 = "UPDATE Einv_Temp SET ERRORMSG=? WHERE IDENTIFIER = ?";
-                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection)) {
+                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection())) {
                        PreparedStatement command = connection.prepareStatement(commandText1);
 
                        command.setString(1, obj.getResults().getErrorMessage());
-                       command.setString(2, dt.getRows().get(0).get("DOC_No").toString());
+                       command.setString(2, dt.getString("DOC_No").toString());
 
                        int rowsAffected = command.executeUpdate();
                    }
 
                    String commandText2 = "UPDATE Einv_Temp1 SET ERRORMSG=? WHERE IDENTIFIER = ?";
-                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection)) {
+                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection())) {
                        PreparedStatement command = connection.prepareStatement(commandText2);
 
                        command.setString(1, obj.getResults().getErrorMessage());
-                       command.setString(2, dt.getRows().get(0).get("DOC_No").toString());
+                       command.setString(2, dt.getString("DOC_No").toString());
 
                        int rowsAffected = command.executeUpdate();
                    }
                } else {
                    String commandText = "UPDATE einvoice_generate_temp SET IRN=?, ACKNo=?, ACKDATE=?, SIGNEDQRCODE=?, SIGNEDINVOICE=?, EWBNO=?, EWBDT=?, EWBVALIDTILL=?, QRCODEURL=?, EINVOICEPDF=? WHERE DOC_NO = ?";
-                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection)) {
+                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection())) {
                        PreparedStatement command = connection.prepareStatement(commandText);
 
                        command.setString(1, obj.getResults().getMessage().getIrn());
-                       command.setString(2, obj.getResults().getMessage().getAckNo());
+                       command.setLong(2, obj.getResults().getMessage().getAckNo());
                        command.setString(3, obj.getResults().getMessage().getAckDt());
                        command.setString(4, obj.getResults().getMessage().getSignedQRCode());
                        command.setString(5, obj.getResults().getMessage().getSignedInvoice());
@@ -57,27 +61,27 @@ public class OracleDataInsert {
                        command.setString(8, obj.getResults().getMessage().getEwbValidTill());
                        command.setString(9, obj.getResults().getMessage().getQRCodeUrl());
                        command.setString(10, obj.getResults().getMessage().getEinvoicePdf());
-                       command.setString(11, dt.getRows().get(0).get("DOC_No").toString());
+                       command.setString(11, dt.getString("DOC_No").toString());
 
                        int rowsAffected = command.executeUpdate();
                    }
 
                    String commandText1 = "UPDATE Einv_Temp SET IRN_NO=? WHERE IDENTIFIER = ?";
-                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection)) {
+                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection())) {
                        PreparedStatement command = connection.prepareStatement(commandText1);
 
                        command.setString(1, obj.getResults().getMessage().getIrn());
-                       command.setString(2, dt.getRows().get(0).get("DOC_No").toString());
+                       command.setString(2, dt.getString("DOC_No").toString());
 
                        int rowsAffected = command.executeUpdate();
                    }
 
                    String commandText2 = "UPDATE Einv_Temp1 SET IRN_NO=? WHERE IDENTIFIER = ?";
-                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection)) {
+                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection())) {
                        PreparedStatement command = connection.prepareStatement(commandText2);
 
                        command.setString(1, obj.getResults().getMessage().getIrn());
-                       command.setString(2, dt.getRows().get(0).get("DOC_No").toString());
+                       command.setString(2, dt.getString("DOC_No").toString());
 
                        int rowsAffected = command.executeUpdate();
                    }
@@ -87,31 +91,31 @@ public class OracleDataInsert {
            }
        }
 
-       public static void insertDataOracle(INVRootObject obj, ResultSet dt) {
+       public static void insertDataOracle(GenerateEinvoice.INVRootObject obj, ResultSet dt) {
            try {
                if (obj.getResults().getCode() != 200) {
                    String commandText = "UPDATE einvoice_generate_temp SET ERRORMSG=? WHERE DOC_NO = ?";
-                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection)) {
+                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection())) {
                        PreparedStatement command = connection.prepareStatement(commandText);
 
                        command.setString(1, obj.getResults().getErrorMessage());
-                       command.setString(2, dt.getRows().get(0).get("DOC_No").toString());
+                       command.setString(2, dt.getString("DOC_No").toString());
 
                        int rowsAffected = command.executeUpdate();
                    }
                } else {
                    String commandText = "INSERT INTO EINVOICE_REF_SETU(GSTIN, IRN, DOC_TYP, DOC_NO, DOC_DT, SIGNEDQRCODE, ACKDATE, ACKNO, SIGNEDINVOICE, EWBNO, EWBDT) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection)) {
+                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection())) {
                        PreparedStatement command = connection.prepareStatement(commandText);
 
-                       command.setString(1, dt.getRows().get(0).get("GSTIN").toString());
+                       command.setString(1, dt.getString("GSTIN").toString());
                        command.setString(2, obj.getResults().getMessage().getIrn());
                        command.setString(3, "GEINV");
-                       command.setString(4, dt.getRows().get(0).get("DOC_No").toString());
-                       command.setString(5, dt.getRows().get(0).get("DOC_DT").toString());
+                       command.setString(4, dt.getString("DOC_No").toString());
+                       command.setString(5, dt.getString("DOC_DT").toString());
                        command.setString(6, obj.getResults().getMessage().getSignedQRCode());
                        command.setString(7, obj.getResults().getMessage().getAckDt());
-                       command.setString(8, obj.getResults().getMessage().getAckNo());
+                       command.setLong(8, obj.getResults().getMessage().getAckNo());
                        command.setString(9, obj.getResults().getMessage().getSignedInvoice());
                        command.setString(10, obj.getResults().getMessage().getEwbNo());
                        command.setString(11, obj.getResults().getMessage().getEwbDt());
@@ -124,35 +128,35 @@ public class OracleDataInsert {
            }
        }
 
-       public static void insertCancelDataOracle(CancelRoot obj, ResultSet dt) {
+       public static void insertCancelDataOracle(CanEinvoice.CancelRoot obj, ResultSet dt) {          
            try {
                if (!obj.getResults().getStatus().equals("200")) {
                    Date date = new Date();
                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                    String date1 = dateFormat.format(date);
                    String sqlstr = "INSERT INTO Finance.EINVOICE_CANCEL(GSTIN, IRN, CNLREM, CNLRSN, STATUS, ERRORMSG, ERRORCODE, CANCELDATE, DOC_NO, DOC_Date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection)) {
+                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection())) {
                        PreparedStatement command = connection.prepareStatement(sqlstr);
 
-                       command.setString(1, dt.getRows().get(0).get("GSTIN").toString());
-                       command.setString(2, dt.getRows().get(0).get("IRN").toString());
+                       command.setString(1, dt.getString("GSTIN").toString());
+                       command.setString(2, dt.getString("IRN").toString());
                        command.setString(3, "Cancel");
                        command.setString(4, "Not res");
                        command.setString(5, obj.getResults().getStatus());
                        command.setString(6, obj.getResults().getErrorMessage());
-                       command.setString(7, obj.getResults().getCode());
+                       command.setInt(7, obj.getResults().getCode());
                        command.setString(8, date1);
-                       command.setString(9, dt.getRows().get(0).get("DOC_NO").toString());
-                       command.setString(10, convertDateTimeOracleFormat(dt.getRows().get(0).get("Dates").toString()));
+                       command.setString(9, dt.getString("DOC_NO").toString());
+                       command.setString(10, convertDateTimeOracleFormat(dt.getString("Dates").toString()));
 
                        int rowsAffected = command.executeUpdate();
                    }
                } else {
                    String sqlstr = "INSERT INTO Finance.EINVOICE_CANCEL(GSTIN, IRN, CNLREM, CNLRSN, STATUS, ERRORMSG, ERRORCODE, CANCELDATE, DOC_NO, DOC_Date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection)) {
+                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection())) {
                        PreparedStatement command = connection.prepareStatement(sqlstr);
-
-                       command.setString(1, dt.getRows().get(0).get("GSTIN").toString());
+                       
+                       command.setString(1, dt.getString("GSTIN").toString());
                        command.setString(2, obj.getResults().getMessage().getIrn());
                        command.setString(3, "");
                        command.setString(4, "");
@@ -160,8 +164,8 @@ public class OracleDataInsert {
                        command.setString(6, "");
                        command.setString(7, "");
                        command.setString(8, obj.getResults().getMessage().getCancelDate());
-                       command.setString(9, dt.getRows().get(0).get("DOC_NO").toString());
-                       command.setString(10, convertDateTimeOracleFormat(dt.getRows().get(0).get("Dates").toString()));
+                       command.setString(9, dt.getString("DOC_NO").toString());
+                       command.setString(10, convertDateTimeOracleFormat(dt.getString("Dates").toString()));
 
                        int rowsAffected = command.executeUpdate();
                    }
@@ -171,27 +175,27 @@ public class OracleDataInsert {
            }
        }
 
-       public static void updateEWBByIRNNO(SuccessEwbByIrn obj, ResultSet dt) {
+       public static void updateEWBByIRNNO(EwaybillByIrn.SuccessEwbByIrn obj, ResultSet dt) {
            try {
                if (obj.getResults().getCode() != 200) {
                    String commandText = "UPDATE einvoice_generate_temp SET ERRORMSG=? WHERE DOC_NO = ?";
-                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection)) {
+                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection())) {
                        PreparedStatement command = connection.prepareStatement(commandText);
 
                        command.setString(1, obj.getResults().getErrorMessage());
-                       command.setString(2, dt.getRows().get(0).get("DOC_No").toString());
+                       command.setString(2, dt.getString("DOC_No").toString());
 
                        int rowsAffected = command.executeUpdate();
                    }
                } else {
                    String commandText = "UPDATE einvoice_generate_temp SET EWBNO=?, EWBDT=?, EWBVALIDTILL=? WHERE DOC_NO = ?";
-                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection)) {
+                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection())) {
                        PreparedStatement command = connection.prepareStatement(commandText);
 
-                       command.setString(1, obj.getResults().getMessage().getEwbNo());
+                       command.setLong(1, obj.getResults().getMessage().getEwbNo());
                        command.setString(2, obj.getResults().getMessage().getEwbDt());
                        command.setString(3, obj.getResults().getMessage().getEwbValidTill());
-                       command.setString(4, dt.getRows().get(0).get("DOC_No").toString());
+                       command.setString(4, dt.getString("DOC_No").toString());
 
                        int rowsAffected = command.executeUpdate();
                    }

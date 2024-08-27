@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Taxilla_GenEWaybillClasses {
 
-    public static String generateJsonFile(ResultSet dt, String access_token) throws SQLException {
+    public String generateJsonFile(ResultSet dt, String access_token) throws SQLException {
         String msg = "";
         List<GenEWaybject> ewaobj = new ArrayList<>();
         GenEWaybject rootDtls = new GenEWaybject();
@@ -60,7 +60,7 @@ public class Taxilla_GenEWaybillClasses {
         return msg = mystr;
     }
 
-    public static String eWBJsonFile(ResultSet dt, String access_token) throws SQLException {
+    public  String eWBJsonFile(ResultSet dt, String access_token) throws SQLException {
         String msg = "";
         try {
             List<GenEWaybject> ewaobj = new ArrayList<>();
@@ -117,7 +117,7 @@ public class Taxilla_GenEWaybillClasses {
         return msg;
     }
 
-    public static List<ItemList> getItemList(ResultSet dt) throws SQLException {
+    public  List<ItemList> getItemList(ResultSet dt) throws SQLException {
         List<ItemList> itm = new ArrayList<>();
         while (dt.next()) {
             ItemList item = new ItemList();
@@ -136,7 +136,7 @@ public class Taxilla_GenEWaybillClasses {
         }
         return itm;
     }
-}
+//}
 
 class ItemList {
     public String productName;
@@ -210,4 +210,5 @@ class EwaySuccessRoot {
     public boolean success;
     public EwaySuccessResult result;
     public String message;
+}
 }

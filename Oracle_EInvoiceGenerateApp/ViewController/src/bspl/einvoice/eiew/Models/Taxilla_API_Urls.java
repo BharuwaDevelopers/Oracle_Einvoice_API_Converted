@@ -70,7 +70,7 @@ public class Taxilla_API_Urls {
     public static String GetEwayErrorlistApi = "https://gsp.adaequare.com/enriched/ewb/master/GetErrorList?";
     public static String GetEwayhsnApi = "https://gsp.adaequare.com/enriched/ewb/master/GetHsnDetailsByHsnCode?hsncode=1001";
     public static String GetEwayTaxPayerApi = "https://gsp.adaequare.com/enriched/ewb/master/GetGSTINDetails?GSTIN=05AAACG2115R1ZN";
-}
+//}
 
 public class AccessTokenResult {
     private String access_token;
@@ -120,5 +120,5 @@ public class AccessTokenResult {
         this.jti = jti;
     }
 }
-
+}
 

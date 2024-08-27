@@ -17,22 +17,22 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import java.sql.ResultSet;
 
 public class EwaybillByIrn {
-    public static String Generate_EwaybillIrn_Json(ResultSet dt, String sessionId, String access_token) {
+    public String Generate_EwaybillIrn_Json(ResultSet dt, String sessionId, String access_token) {
         String msg = "";
         try {
             List<e_waybillIrnBO> ewaybillIrn_obj = new ArrayList<>();
             e_waybillIrnBO rootDtls = new e_waybillIrnBO();
             rootDtls.access_token = access_token;
-            rootDtls.user_gstin = dt.getRows().get(0).get("GSTIN").toString();
-            rootDtls.irn = dt.getRows().get(0).get("IRN").toString();
-            rootDtls.transporter_id = dt.getRows().get(0).get("EWAY_TRANSPORTAR_ID").toString();
-            rootDtls.transportation_mode = dt.getRows().get(0).get("EWAY_TRANSPORTAR_MODE").toString();
-            rootDtls.transporter_document_number = dt.getRows().get(0).get("EWAY_TRANSPORTAR_DOCNO").toString();
+            rootDtls.user_gstin = dt.getString("GSTIN").toString();
+            rootDtls.irn = dt.getString("IRN").toString();
+            rootDtls.transporter_id = dt.getString("EWAY_TRANSPORTAR_ID").toString();
+            rootDtls.transportation_mode = dt.getString("EWAY_TRANSPORTAR_MODE").toString();
+            rootDtls.transporter_document_number = dt.getString("EWAY_TRANSPORTAR_DOCNO").toString();
             rootDtls.transporter_document_date = new SimpleDateFormat("dd/MM/yyyy").format(dt.getRows().get(0).get("EWAY_TRANSPORTAR_DOCDT"));
-            rootDtls.vehicle_number = dt.getRows().get(0).get("EWAY_TRANSPORTAR_VEHINO").toString();
-            rootDtls.distance = Integer.parseInt(dt.getRows().get(0).get("EWAY_TRANSPORTAR_DISTANCE").toString());
-            rootDtls.vehicle_type = dt.getRows().get(0).get("EWAY_TRANSPORTAR_VEHITYPE").toString();
-            rootDtls.transporter_name = dt.getRows().get(0).get("EWAY_TRANSPORTAR_NAME").toString();
+            rootDtls.vehicle_number = dt.getString("EWAY_TRANSPORTAR_VEHINO").toString();
+            rootDtls.distance = Integer.parseInt(dt.getString("EWAY_TRANSPORTAR_DISTANCE").toString());
+            rootDtls.vehicle_type = dt.getString("EWAY_TRANSPORTAR_VEHITYPE").toString();
+            rootDtls.transporter_name = dt.getString("EWAY_TRANSPORTAR_NAME").toString();
             rootDtls.data_source = "erp";
 
             ewaybillIrn_obj.add(rootDtls);
@@ -46,7 +46,7 @@ public class EwaybillByIrn {
         }
     }
 
-    public static CompletableFuture<String> Generate_EwaybillIrn(String JsonFile, String sekdec, ResultSet dt, String Type) {
+    public CompletableFuture<String> Generate_EwaybillIrn(String JsonFile, String sekdec, ResultSet dt, String Type) {
         CompletableFuture<String> future = new CompletableFuture<>();
         String InvResult = "", InvRData = "";
         HttpClient client = HttpClient.newHttpClient();
@@ -71,7 +71,7 @@ public class EwaybillByIrn {
                                 ObjectMapper objectMapper = new ObjectMapper();
                                 ErrorEwbByIrn value2 = objectMapper.readValue(response, ErrorEwbByIrn.class);
                                 String sqlstr = "update einvoice_generate_temp set ERRORMSG='" + InvResult + "' where id='" + dt.getRows().get(0).get("ID").toString() + "' and DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-                                int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection, sqlstr);
+                                int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection(), sqlstr);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -80,18 +80,18 @@ public class EwaybillByIrn {
                     })
                     .exceptionally(ex -> {
                         String sqlstr = "update einvoice_generate_temp set ERRORMSG='" + InvResult + "' where id='" + dt.getRows().get(0).get("ID").toString() + "' and DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-                        int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection, sqlstr);
+                        int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection(), sqlstr);
                         future.completeExceptionally(ex);
                         return null;
                     });
         } catch (Exception ex) {
             String sqlstr = "update einvoice_generate_temp set ERRORMSG='" + InvResult + "' where id='" + dt.getRows().get(0).get("ID").toString() + "' and DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-            int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection, sqlstr);
+            int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection(), sqlstr);
             future.completeExceptionally(ex);
         }
         return future;
     }
-}
+//}
 
 class e_waybillIrnBO {
     public String access_token;
@@ -110,7 +110,31 @@ class e_waybillIrnBO {
 
 class SuccessMessage {
     public long EwbNo;
-    public String EwbDt;
+
+        void setEwbNo(long EwbNo) {
+            this.EwbNo = EwbNo;
+        }
+
+        long getEwbNo() {
+            return EwbNo;
+        }
+
+        void setEwbDt(String EwbDt) {
+            this.EwbDt = EwbDt;
+        }
+
+        String getEwbDt() {
+            return EwbDt;
+        }
+
+        void setEwbValidTill(String EwbValidTill) {
+            this.EwbValidTill = EwbValidTill;
+        }
+
+        String getEwbValidTill() {
+            return EwbValidTill;
+        }
+        public String EwbDt;
     public String EwbValidTill;
 }
 
@@ -119,11 +143,59 @@ class SuccessResults {
     public String errorMessage;
     public String InfoDtls;
     public String status;
-    public int code;
+
+        void setMessage(EwaybillByIrn.SuccessMessage message) {
+            this.message = message;
+        }
+
+        EwaybillByIrn.SuccessMessage getMessage() {
+            return message;
+        }
+
+        void setErrorMessage(String errorMessage) {
+            this.errorMessage = errorMessage;
+        }
+
+        String getErrorMessage() {
+            return errorMessage;
+        }
+
+        void setInfoDtls(String InfoDtls) {
+            this.InfoDtls = InfoDtls;
+        }
+
+        String getInfoDtls() {
+            return InfoDtls;
+        }
+
+        void setStatus(String status) {
+            this.status = status;
+        }
+
+        String getStatus() {
+            return status;
+        }
+
+        void setCode(int code) {
+            this.code = code;
+        }
+
+        int getCode() {
+            return code;
+        }
+        public int code;
 }
 
 class SuccessEwbByIrn {
     public SuccessResults results;
+
+    void setResults(SuccessResults results) {
+        this.results = results;
+    }
+
+    SuccessResults getResults() {
+        return results;
+    }
 }
 
 class ErrorResults {
@@ -138,4 +210,4 @@ class ErrorEwbByIrn {
     public ErrorResults results;
 }
 
-
+}

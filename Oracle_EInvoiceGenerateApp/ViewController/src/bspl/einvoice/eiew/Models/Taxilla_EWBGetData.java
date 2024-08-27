@@ -40,7 +40,7 @@ public class Taxilla_EWBGetData {
             sqlstr = "SELECT * FROM EWB_GEN_STD WHERE EWAY_BILL_NO = ?";
         }
 
-        try (Connection conn = OraDBConnection.getOrclConnection();
+        try (Connection conn = OraDBConnection.OrclConnection();
              PreparedStatement pstmt = conn.prepareStatement(sqlstr)) {
             if (EINVType.equals("GEWB")) {
                 pstmt.setString(1, SessionID);

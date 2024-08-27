@@ -1,8 +1,7 @@
 package bspl.einvoice.eiew.ViewModels;
 
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import bspl.einvoice.eiew.Models.OraDBConnection;
+
 import java.net.URI;
 import java.net.http.HttpHeaders;
 import java.util.concurrent.CompletableFuture;
@@ -16,7 +15,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public class DtlInvoiceByIrn {
-    public static CompletableFuture<String> DetailInvoiceByIrn(String IRN_No, String access_token, Map<String, String> dt) {
+    public CompletableFuture<String> DetailInvoiceByIrn(String IRN_No, String access_token, Map<String, String> dt) {
         String InvRData = "";
         String InvResult = "";
         try {
@@ -47,7 +46,7 @@ public class DtlInvoiceByIrn {
             return CompletableFuture.completedFuture(InvRData = InvResult);
         } catch (Exception ex) {
             String sqlstr = "update einvoice_generate_temp set ERRORMSG='" + InvResult + "' where id='" + dt.get("ID") + "' and DOC_NO='" + dt.get("DOC_NO") + "'";
-            try (Connection conn = DriverManager.getConnection(OraDBConnection.OrclConnection);
+            try (Connection conn = DriverManager.getConnection(OraDBConnection.OrclConnection());
                  Statement stmt = conn.createStatement()) {
                 int i = stmt.executeUpdate(sqlstr);
             } catch (SQLException e) {
@@ -57,7 +56,7 @@ public class DtlInvoiceByIrn {
             return CompletableFuture.completedFuture(InvRData = ex.getMessage());
         }
     }
-}
+//}
 
 class INVDtlMessage {
     private String AckNo;
@@ -87,4 +86,6 @@ class INVDtlRootObject {
     private INVDtlResults results;
 
     // Getters and Setters
+}
+
 }

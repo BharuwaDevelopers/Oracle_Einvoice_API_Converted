@@ -65,7 +65,7 @@ public class Taxilla_EinvoiceAPI {
                    return invResult;
                } catch (Exception err) {
                    String sqlStr = "update einvoice_generate_temp set ERRORMSG='" + invResult + "' where DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-                   DataLayer.executeNonQuery(OraDBConnection.OrclConnection, sqlStr);
+                   DataLayer.executeNonQuery(OraDBConnection.OrclConnection(), sqlStr);
                    return err.getMessage();
                }
            });
@@ -82,9 +82,9 @@ public class Taxilla_EinvoiceAPI {
                    RequestBody body = RequestBody.create(jsonFile, MediaType.parse("application/json; charset=utf-8"));
                    Request request = new Request.Builder()
                            .url(url)
-                           .addHeader("user_name", dt.getRows().get(0).get("EINVUSERNAME").toString())
-                           .addHeader("password", dt.getRows().get(0).get("EINVPASSWORD").toString())
-                           .addHeader("gstin", dt.getRows().get(0).get("GSTIN").toString())
+                           .addHeader("user_name", dt.getString("EINVUSERNAME").toString())
+                           .addHeader("password", dt.getString("EINVPASSWORD").toString())
+                           .addHeader("gstin", dt.getString("GSTIN").toString())
                            .addHeader("requestid", requestId)
                            .addHeader("Authorization", "Bearer " + auth)
                            .post(body)
@@ -94,7 +94,7 @@ public class Taxilla_EinvoiceAPI {
                        if (response.isSuccessful()) {
                            invResult = response.body().string();
                            respResult = invResult;
-                           ClsDynamic.writeLog(respResult, dt.getRows().get(0).get("DOC_NO").toString().replace("/", "_"));
+                           ClsDynamic.writeLog(respResult, dt.getString("DOC_NO").toString().replace("/", "_"));
                            String lrData2 = response.body().string();
                            try {
                                SuccessRoot value2 = new Gson().fromJson(lrData2, SuccessRoot.class);
@@ -109,7 +109,7 @@ public class Taxilla_EinvoiceAPI {
 
                                    String commandText = "UPDATE einvoice_generate_temp SET IRN='" + obj.getResult().getIrn() + "',ACKNo='" + obj.getResult().getAckNo() + "',ACKDATE='" + obj.getResult().getAckDt() + "',SIGNEDQRCODE='" + obj.getResult().getSignedQRCode() + "',EWBNO = '" + obj.getResult().getEwbNo() + "' , EWBDT = '" + obj.getResult().getEwbDt() + "',EWBVALIDTILL = '" + obj.getResult().getEwbValidTill() + "' ,QRCODEURL ='' ,EINVOICEPDF ='',ERRORMSG='',ErrorCode='" + infodata + "'  WHERE ID='" + sessionId + "' and  DOC_NO ='" + dt.getRows().get(0).get("DOC_No").toString() + "'";
                                    ClsDynamic.writeLog(commandText, dt.getRows().get(0).get("DOC_NO").toString().replace("/", "_"));
-                                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection)) {
+                                   try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection())) {
                                        PreparedStatement statement = connection.prepareStatement(commandText);
                                        statement.executeUpdate();
                                    }
@@ -128,7 +128,7 @@ public class Taxilla_EinvoiceAPI {
                                } else {
                                    String dQuote = "'";
                                    respResult = invResult;
-                                   ClsDynamic.updateErrorLog(respResult, dt.getRows().get(0).get("DOC_NO").toString());
+                                   ClsDynamic.updateErrorLog(respResult, dt.getString("DOC_NO").toString());
                                }
                            } catch (Exception ex) {
                                try {
@@ -143,17 +143,17 @@ public class Taxilla_EinvoiceAPI {
                                        }
 
                                        String commandText = "UPDATE einvoice_generate_temp SET IRN='" + obj.getResult().getIrn() + "',ACKNo='" + obj.getResult().getAckNo() + "',ACKDATE='" + obj.getResult().getAckDt() + "',SIGNEDQRCODE='" + obj.getResult().getSignedQRCode() + "',EWBNO = '" + obj.getResult().getEwbNo() + "' , EWBDT = '" + obj.getResult().getEwbDt() + "',EWBVALIDTILL = '" + obj.getResult().getEwbValidTill() + "' ,QRCODEURL ='' ,EINVOICEPDF ='',ERRORMSG='',ErrorCode='" + infodata + "'  WHERE id='" + sessionId + "' and DOC_NO ='" + dt.getRows().get(0).get("DOC_No").toString() + "'";
-                                       ClsDynamic.writeLog(commandText, dt.getRows().get(0).get("DOC_NO").toString().replace("/", "_"));
-                                       try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection)) {
+                                       ClsDynamic.writeLog(commandText, dt.getString("DOC_NO").toString().replace("/", "_"));
+                                       try (Connection connection = DriverManager.getConnection(OraDBConnection.OrclConnection())) {
                                            PreparedStatement statement = connection.prepareStatement(commandText);
                                            statement.executeUpdate();
                                        }
 
                                        respResult = "1";
 
-                                       if (value2.getResult().getEwbNo() == null && einvewb.equals("Y") && dt.getRows().get(0).get("DOC_TYP").toString().equals("INV")) {
+                                       if (value2.getResult().getEwbNo() == null && einvewb.equals("Y") && dt.getString("DOC_TYP").toString().equals("INV")) {
                                            String jfile = Taxilla_EwaybillByIrnClasses.generateEwaybillIrnJson(dt, value2.getResult().getIrn(), "");
-                                           ClsDynamic.jsonLog(jfile, dt.getRows().get(0).get("DOC_NO").toString().replace("/", "_"));
+                                           ClsDynamic.jsonLog(jfile, dt.getString("DOC_NO").toString().replace("/", "_"));
                                            String rInvData = Taxilla_EinvoiceAPI.generateEwaybillIrn(dt, jfile, requestId, sessionId, auth).join();
                                            if (rInvData.equals("1")) {
                                                respResult = "2";
@@ -164,7 +164,7 @@ public class Taxilla_EinvoiceAPI {
                                    } else {
                                        String dQuote = "'";
                                        respResult = invResult;
-                                       ClsDynamic.updateErrorLog(respResult, dt.getRows().get(0).get("DOC_NO").toString());
+                                       ClsDynamic.updateErrorLog(respResult, dt.getString("DOC_NO").toString());
                                    }
                                } catch (Exception ex1) {
                                    try {
@@ -174,27 +174,27 @@ public class Taxilla_EinvoiceAPI {
                                        } else {
                                            String dQuote = "'";
                                            respResult = invResult;
-                                           ClsDynamic.updateErrorLog(respResult, dt.getRows().get(0).get("DOC_NO").toString());
+                                           ClsDynamic.updateErrorLog(respResult, dt.getString("DOC_NO").toString());
                                        }
                                    } catch (Exception ex2) {
                                        String dQuote = "'";
                                        respResult = invResult;
-                                       ClsDynamic.updateErrorLog(respResult, dt.getRows().get(0).get("DOC_NO").toString());
+                                       ClsDynamic.updateErrorLog(respResult, dt.getString("DOC_NO").toString());
                                    }
                                }
                            }
                        } else {
-                           ClsDynamic.writeLog(response.toString(), dt.getRows().get(0).get("DOC_NO").toString().replace("/", "_"));
+                           ClsDynamic.writeLog(response.toString(), dt.getString("DOC_NO").toString().replace("/", "_"));
                            String dQuote = "'";
                            respResult = invResult;
-                           ClsDynamic.updateErrorLog(respResult, dt.getRows().get(0).get("DOC_NO").toString());
+                           ClsDynamic.updateErrorLog(respResult, dt.getString("DOC_NO").toString());
                        }
                    }
                } catch (Exception ex) {
                    String dQuote = "'";
                    respResult = invResult;
-                   ClsDynamic.writeLog(ex.getMessage(), dt.getRows().get(0).get("DOC_NO").toString().replace("/", "_"));
-                   ClsDynamic.updateErrorLog(respResult, dt.getRows().get(0).get("DOC_NO").toString());
+                   ClsDynamic.writeLog(ex.getMessage(), dt.getString("DOC_NO").toString().replace("/", "_"));
+                   ClsDynamic.updateErrorLog(respResult, dt.getString("DOC_NO").toString());
                }
                return respResult;
            });
@@ -212,9 +212,9 @@ public class Taxilla_EinvoiceAPI {
                    RequestBody body = RequestBody.create(jsonFile, MediaType.parse("application/json; charset=utf-8"));
                    Request request = new Request.Builder()
                            .url(url)
-                           .addHeader("user_name", dt.getRows().get(0).get("EINVUSERNAME").toString())
-                           .addHeader("password", dt.getRows().get(0).get("EINVPASSWORD").toString())
-                           .addHeader("gstin", dt.getRows().get(0).get("GSTIN").toString())
+                           .addHeader("user_name", dt.getString("EINVUSERNAME").toString())
+                           .addHeader("password", dt.getString("EINVPASSWORD").toString())
+                           .addHeader("gstin", dt.getString("GSTIN").toString())
                            .addHeader("requestid", requestId)
                            .addHeader("Authorization", "Bearer " + auth)
                            .post(body)
@@ -228,18 +228,18 @@ public class Taxilla_EinvoiceAPI {
                                String lrData2 = response.body().string();
                                EinvCanSuccessRoot value2 = new Gson().fromJson(lrData2, EinvCanSuccessRoot.class);
                                String sqlStr = "update einvoice_generate set Status='EINVCAN' where DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-                               DataLayer.executeNonQuery(OraDBConnection.OrclConnection, sqlStr);
+                               DataLayer.executeNonQuery(OraDBConnection.OrclConnection(), sqlStr);
                                invResult = "1";
                            } else {
                                String sqlStr = "update einvoice_generate set ERRORMSG='" + invResult + "' where DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-                               DataLayer.executeNonQuery(OraDBConnection.OrclConnection, sqlStr);
+                               DataLayer.executeNonQuery(OraDBConnection.OrclConnection(), sqlStr);
                            }
                        }
                    }
                    return invRData = invResult;
                } catch (Exception ex) {
                    String sqlStr = "update einvoice_generate set ERRORMSG='" + invResult + "' where DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-                   DataLayer.executeNonQuery(OraDBConnection.OrclConnection, sqlStr);
+                   DataLayer.executeNonQuery(OraDBConnection.OrclConnection(), sqlStr);
                    return invRData = ex.getMessage();
                }
            });
@@ -255,9 +255,9 @@ public class Taxilla_EinvoiceAPI {
 
                    Request request = new Request.Builder()
                            .url(url + "?irn=" + irnNo)
-                           .addHeader("user_name", dt.getRows().get(0).get("EINVUSERNAME").toString())
-                           .addHeader("password", dt.getRows().get(0).get("EINVPASSWORD").toString())
-                           .addHeader("gstin", dt.getRows().get(0).get("GSTIN").toString())
+                           .addHeader("user_name", dt.getString("EINVUSERNAME").toString())
+                           .addHeader("password", dt.getString("EINVPASSWORD").toString())
+                           .addHeader("gstin", dt.getString("GSTIN").toString())
                            .addHeader("requestid", requestId)
                            .addHeader("Authorization", "Bearer " + auth)
                            .get()
@@ -277,7 +277,7 @@ public class Taxilla_EinvoiceAPI {
                    return invRData = invResult;
                } catch (Exception ex) {
                    String sqlStr = "update einvoice_generate_temp set ERRORMSG='" + invResult + "' where DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-                   DataLayer.executeNonQuery(OraDBConnection.OrclConnection, sqlStr);
+                   DataLayer.executeNonQuery(OraDBConnection.OrclConnection(), sqlStr);
                    return invRData = ex.getMessage();
                }
            });
@@ -295,9 +295,9 @@ public class Taxilla_EinvoiceAPI {
                HttpRequest request = HttpRequest.newBuilder()
                        .uri(URI.create(url))
                        .header("Content-Type", "application/json")
-                       .header("user_name", dt.getRows().get(0).get("EINVUSERNAME").toString())
-                       .header("password", dt.getRows().get(0).get("EINVPASSWORD").toString())
-                       .header("gstin", dt.getRows().get(0).get("GSTIN").toString())
+                       .header("user_name", dt.getString("EINVUSERNAME").toString())
+                       .header("password", dt.getString("EINVPASSWORD").toString())
+                       .header("gstin", dt.getString("GSTIN").toString())
                        .header("requestid", requestId)
                        .header("Authorization", "Bearer " + auth)
                        .POST(HttpRequest.BodyPublishers.ofString(jsonfile, StandardCharsets.UTF_8))
@@ -308,17 +308,17 @@ public class Taxilla_EinvoiceAPI {
                    if (res.statusCode() == 200) {
                        try {
                            invResult = res.body();
-                           ClsDynamic.writeLog(invResult, dt.getRows().get(0).get("DOC_NO").toString().replace("/", "_"));
+                           ClsDynamic.writeLog(invResult, dt.getString("DOC_NO").toString().replace("/", "_"));
                            ObjectMapper mapper = new ObjectMapper();
                            JsonNode json = mapper.readTree(invResult);
                            if (json.get("success").asBoolean()) {
                                IrnEwaybillSuccessRoot value2 = mapper.readValue(invResult, IrnEwaybillSuccessRoot.class);
                                String sqlstr = "update einvoice_generate_temp set EWBNO='" + value2.getResult().getEwbNo() + "',EWBDT='" + value2.getResult().getEwbDt() + "',EWBVALIDTILL='" + value2.getResult().getEwbValidTill() + "' where id='" + sessionId + "' and DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
-                               ClsDynamic.writeLog(sqlstr, dt.getRows().get(0).get("DOC_NO").toString().replace("/", "_"));
+                               ClsDynamic.writeLog(sqlstr, dt.getString("DOC_NO").toString().replace("/", "_"));
                                executeNonQuery(sqlstr);
                                invResult = "1";
                            } else {
-                               String rval = getEwaybillByIrn(dt, dt.getRows().get(0).get("IRN").toString(), "", "", auth).get();
+                               String rval = getEwaybillByIrn(dt, dt.getString("IRN").toString(), "", "", auth).get();
                                if (!"1".equals(rval)) {
                                    String sqlstr = "update einvoice_generate_temp set ERRORMSG='" + json.get("message").asText() + "' where id='" + sessionId + "' and DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";
                                    executeNonQuery(sqlstr);
@@ -332,7 +332,7 @@ public class Taxilla_EinvoiceAPI {
 
                return CompletableFuture.completedFuture(invResult);
            } catch (Exception ex) {
-               ClsDynamic.writeLog(ex.toString(), dt.getRows().get(0).get("DOC_NO").toString().replace("/", "_"));
+               ClsDynamic.writeLog(ex.toString(), dt.getString("DOC_NO").toString().replace("/", "_"));
                String dQuote = "\"";
                String errmsg = invResult;
                String sqlstr = "update einvoice_generate_temp set ERRORMSG='" + errmsg.replace(dQuote, "") + "' where id='" + dt.getRows().get(0).get("ID").toString() + "' and DOC_NO='" + dt.getRows().get(0).get("DOC_NO").toString() + "'";

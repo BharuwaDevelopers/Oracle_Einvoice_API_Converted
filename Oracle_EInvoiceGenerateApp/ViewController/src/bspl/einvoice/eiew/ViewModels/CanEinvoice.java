@@ -3,12 +3,10 @@ package bspl.einvoice.eiew.ViewModels;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import java.io.IOException;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,18 +14,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import org.json.JSONObject;
+
 
 
 public class CanEinvoice {
 
-    public static String CancelJsonFile(ResultSet dt, String irn, String token) {
+    public String CancelJsonFile(ResultSet dt, String irn, String token) throws SQLException {
         String JsTest = "";
         try {
             CancelRootObject Calceljson = new CancelRootObject();
             Calceljson.access_token = token;
-            Calceljson.user_gstin = dt.getValueAt(0, "GSTIN").toString();
-            Calceljson.irn = dt.getValueAt(0, "IRN").toString();
+            Calceljson.user_gstin = dt.getString("GSTIN").toString();
+            Calceljson.irn = dt.getString("IRN").toString();
             Calceljson.cancel_reason = "1 ";
             Calceljson.cancel_remarks = "cancel Remarks";
 
@@ -41,7 +39,7 @@ public class CanEinvoice {
         return JsTest;
     }
 
-    public static CompletableFuture<String> CancelInvoice(String JsonFile, String sekdec, ResultSet dt) {
+    public CompletableFuture<String> CancelInvoice(String JsonFile, String sekdec, ResultSet dt) {
         String InvRData = "";
         String InvResult = "";
         String ErrorMsg = "";
@@ -92,11 +90,51 @@ public class CanEinvoice {
         }
         return CompletableFuture.completedFuture(InvRData);
     }
-}
+
 
 class CancelRootObject {
     public String access_token;
     public String user_gstin;
+
+    void setAccess_token(String access_token) {
+        this.access_token = access_token;
+    }
+
+    String getAccess_token() {
+        return access_token;
+    }
+
+    void setUser_gstin(String user_gstin) {
+        this.user_gstin = user_gstin;
+    }
+
+    String getUser_gstin() {
+        return user_gstin;
+    }
+
+    void setIrn(String irn) {
+        this.irn = irn;
+    }
+
+    String getIrn() {
+        return irn;
+    }
+
+    void setCancel_reason(String cancel_reason) {
+        this.cancel_reason = cancel_reason;
+    }
+
+    String getCancel_reason() {
+        return cancel_reason;
+    }
+
+    void setCancel_remarks(String cancel_remarks) {
+        this.cancel_remarks = cancel_remarks;
+    }
+
+    String getCancel_remarks() {
+        return cancel_remarks;
+    }
     public String irn;
     public String cancel_reason;
     public String cancel_remarks;
@@ -104,6 +142,22 @@ class CancelRootObject {
 
 class CncelMessage {
     public String Irn;
+
+    void setIrn(String Irn) {
+        this.Irn = Irn;
+    }
+
+    String getIrn() {
+        return Irn;
+    }
+
+    void setCancelDate(String CancelDate) {
+        this.CancelDate = CancelDate;
+    }
+
+    String getCancelDate() {
+        return CancelDate;
+    }
     public String CancelDate;
 }
 
@@ -111,10 +165,59 @@ class CancelResults {
     public CncelMessage message;
     public String errorMessage;
     public String InfoDtls;
+
+    void setMessage(CncelMessage message) {
+        this.message = message;
+    }
+
+    CncelMessage getMessage() {
+        return message;
+    }
+
+    void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    String getErrorMessage() {
+        return errorMessage;
+    }
+
+    void setInfoDtls(String InfoDtls) {
+        this.InfoDtls = InfoDtls;
+    }
+
+    String getInfoDtls() {
+        return InfoDtls;
+    }
+
+    void setStatus(String status) {
+        this.status = status;
+    }
+
+    String getStatus() {
+        return status;
+    }
+
+    void setCode(int code) {
+        this.code = code;
+    }
+
+    int getCode() {
+        return code;
+    }
     public String status;
     public int code;
 }
 
-class CancelRoot {
+ class CancelRoot {
     public CancelResults results;
+
+    public CancelResults getResults() {
+        return results;
+    }
+
+    public void setResults(CancelResults results) {
+        this.results = results;
+    }
+}
 }

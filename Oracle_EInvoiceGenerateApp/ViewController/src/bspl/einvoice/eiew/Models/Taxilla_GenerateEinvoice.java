@@ -200,19 +200,19 @@ public class Taxilla_GenerateEinvoice {
     public static TranDtls GetTranGetails(ResultSet dt) {
         try {
             TranDtls TranDtls = new TranDtls();
-            TranDtls.setTaxSch(dt.getRows().get(0).get("TAXSCH").toString().isEmpty() ? "GST" :
-                               dt.getRows().get(0).get("TAXSCH").toString());
-            TranDtls.setSupTyp(dt.getRows().get(0).get("TRAN_CATG").toString());
-            TranDtls.setRegRev(dt.getRows().get(0).get("TRAN_ECMTRN").toString());
-            TranDtls.setEcmGstin(dt.getRows().get(0).get("ecommerce_gstin").toString().isEmpty() ? null :
-                                 dt.getRows().get(0).get("ecommerce_gstin").toString());
-            TranDtls.setIgstOnIntra(dt.getRows().get(0).get("IGST_INTRA").toString());
+            TranDtls.setTaxSch(dt.getString("TAXSCH").toString().isEmpty() ? "GST" :
+                               dt.getString("TAXSCH").toString());
+            TranDtls.setSupTyp(dt.getString("TRAN_CATG").toString());
+            TranDtls.setRegRev(dt.getString("TRAN_ECMTRN").toString());
+            TranDtls.setEcmGstin(dt.getString("ecommerce_gstin").toString().isEmpty() ? null :
+                                 dt.getString("ecommerce_gstin").toString());
+            TranDtls.setIgstOnIntra(dt.getString("IGST_INTRA").toString());
             return TranDtls;
         } catch (Exception ex) {
             ClsDynamic.WriteLog("Error from TranDtls " + ex.getMessage(),
-                                dt.getRows().get(0).get("DOC_No").toString().replace("/", "_"));
+                                dt.getString("DOC_No").toString().replace("/", "_"));
             ClsDynamic.UpdateErrorLog("Error from TranDtls " + ex.getMessage(),
-                                      dt.getRows().get(0).get("DOC_No").toString());
+                                      dt.getString("DOC_No").toString());
             throw ex;
         }
     }
@@ -220,16 +220,16 @@ public class Taxilla_GenerateEinvoice {
     public static DocDtls GetDocumentDetails(ResultSet dt) {
         try {
             DocDtls DocDtls = new DocDtls();
-            DocDtls.setTyp(dt.getRows().get(0).get("DOC_TYP").toString());
-            DocDtls.setNo(dt.getRows().get(0).get("DOC_NO").toString());
+            DocDtls.setTyp(dt.getString("DOC_TYP").toString());
+            DocDtls.setNo(dt.getString("DOC_NO").toString());
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            DocDtls.setDt(sdf.format(dt.getRows().get(0).get("DOC_DT")));
+            DocDtls.setDt(sdf.format(dt.getString("DOC_DT")));
             return DocDtls;
         } catch (Exception ex) {
             ClsDynamic.WriteLog("Error from DocDtls " + ex.getMessage(),
-                                dt.getRows().get(0).get("DOC_No").toString().replace("/", "_"));
+                                dt.getString("DOC_No").toString().replace("/", "_"));
             ClsDynamic.UpdateErrorLog("Error from DocDtls " + ex.getMessage(),
-                                      dt.getRows().get(0).get("DOC_No").toString());
+                                      dt.getString("DOC_No").toString());
             throw ex;
         }
     }
@@ -237,25 +237,25 @@ public class Taxilla_GenerateEinvoice {
     public static SellerDtls GetSellerDetails(ResultSet dt) {
         try {
             SellerDtls SellerDtls = new SellerDtls();
-            SellerDtls.setGstin(dt.getRows().get(0).get("BILLFROM_GSTIN").toString());
-            SellerDtls.setLglNm(dt.getRows().get(0).get("BILLFROM_TRDNM").toString());
-            SellerDtls.setTrdNm(dt.getRows().get(0).get("BILLFROM_TRDNM").toString().isEmpty() ? null :
-                                dt.getRows().get(0).get("BILLFROM_TRDNM").toString());
-            SellerDtls.setAddr1(dt.getRows().get(0).get("BILLFROM_BNO").toString().trim());
+            SellerDtls.setGstin(dt.getString("BILLFROM_GSTIN").toString());
+            SellerDtls.setLglNm(dt.getString("BILLFROM_TRDNM").toString());
+            SellerDtls.setTrdNm(dt.getString("BILLFROM_TRDNM").toString().isEmpty() ? null :
+                                dt.getString("BILLFROM_TRDNM").toString());
+            SellerDtls.setAddr1(dt.getString("BILLFROM_BNO").toString().trim());
             SellerDtls.setAddr2(null);
-            SellerDtls.setLoc(dt.getRows().get(0).get("BILLFROM_LOC").toString());
-            SellerDtls.setPin(Integer.parseInt(dt.getRows().get(0).get("BILLFROM_PIN").toString().isEmpty() ? "201301" :
-                                               dt.getRows().get(0).get("BILLFROM_PIN").toString()));
-            SellerDtls.setStcd(dt.getRows().get(0).get("BILLFROM_STCD").toString().isEmpty() ? "0" :
-                               dt.getRows().get(0).get("BILLFROM_STCD").toString());
+            SellerDtls.setLoc(dt.getString("BILLFROM_LOC").toString());
+            SellerDtls.setPin(Integer.parseInt(dt.getString("BILLFROM_PIN").toString().isEmpty() ? "201301" :
+                                               dt.getString("BILLFROM_PIN").toString()));
+            SellerDtls.setStcd(dt.getString("BILLFROM_STCD").toString().isEmpty() ? "0" :
+                               dt.getString("BILLFROM_STCD").toString());
             SellerDtls.setPh(null);
             SellerDtls.setEm(null);
             return SellerDtls;
         } catch (Exception ex) {
             ClsDynamic.WriteLog("Error from SellerDtls " + ex.getMessage(),
-                                dt.getRows().get(0).get("DOC_No").toString().replace("/", "_"));
+                                dt.getString("DOC_No").toString().replace("/", "_"));
             ClsDynamic.UpdateErrorLog("Error from SellerDtls " + ex.getMessage(),
-                                      dt.getRows().get(0).get("DOC_No").toString());
+                                      dt.getString("DOC_No").toString());
             throw ex;
         }
     }
@@ -263,28 +263,28 @@ public class Taxilla_GenerateEinvoice {
     public static BuyerDtls GetBuyerDetails(ResultSet dt) {
         try {
             BuyerDtls BuyerDtls = new BuyerDtls();
-            BuyerDtls.setGstin(dt.getRows().get(0).get("BILLTO_GSTIN").toString());
-            BuyerDtls.setLglNm(dt.getRows().get(0).get("BILLTO_TRDNM").toString());
-            BuyerDtls.setTrdNm(dt.getRows().get(0).get("BILLTO_TRDNM").toString().isEmpty() ? null :
-                               dt.getRows().get(0).get("BILLTO_TRDNM").toString());
-            BuyerDtls.setPos(dt.getRows().get(0).get("place_of_supply").toString().isEmpty() ? null :
-                             dt.getRows().get(0).get("place_of_supply").toString());
-            BuyerDtls.setAddr1(dt.getRows().get(0).get("BILLTO_BNO").toString().trim());
+            BuyerDtls.setGstin(dt.getString("BILLTO_GSTIN").toString());
+            BuyerDtls.setLglNm(dt.getString("BILLTO_TRDNM").toString());
+            BuyerDtls.setTrdNm(dt.getString("BILLTO_TRDNM").toString().isEmpty() ? null :
+                               dt.getString("BILLTO_TRDNM").toString());
+            BuyerDtls.setPos(dt.getString("place_of_supply").toString().isEmpty() ? null :
+                             dt.getString("place_of_supply").toString());
+            BuyerDtls.setAddr1(dt.getString("BILLTO_BNO").toString().trim());
             BuyerDtls.setAddr2(null);
-            BuyerDtls.setLoc(dt.getRows().get(0).get("BILLTO_LOC").toString().isEmpty() ? "" :
-                             dt.getRows().get(0).get("BILLTO_LOC").toString());
-            BuyerDtls.setPin(Integer.parseInt(dt.getRows().get(0).get("BILLTO_PIN").toString().isEmpty() ? "201301" :
-                                              dt.getRows().get(0).get("BILLTO_PIN").toString()));
-            BuyerDtls.setStcd(dt.getRows().get(0).get("BILLTO_STCD").toString().isEmpty() ? null :
-                              dt.getRows().get(0).get("BILLTO_STCD").toString());
+            BuyerDtls.setLoc(dt.getString("BILLTO_LOC").toString().isEmpty() ? "" :
+                             dt.getString("BILLTO_LOC").toString());
+            BuyerDtls.setPin(Integer.parseInt(dt.getString("BILLTO_PIN").toString().isEmpty() ? "201301" :
+                                              dt.getString("BILLTO_PIN").toString()));
+            BuyerDtls.setStcd(dt.getString("BILLTO_STCD").toString().isEmpty() ? null :
+                              dt.getString("BILLTO_STCD").toString());
             BuyerDtls.setPh(null);
             BuyerDtls.setEm(null);
             return BuyerDtls;
         } catch (Exception ex) {
             ClsDynamic.WriteLog("Error from BuyerDtls " + ex.getMessage(),
-                                dt.getRows().get(0).get("DOC_No").toString().replace("/", "_"));
+                                dt.getString("DOC_No").toString().replace("/", "_"));
             ClsDynamic.UpdateErrorLog("Error from BuyerDtls " + ex.getMessage(),
-                                      dt.getRows().get(0).get("DOC_No").toString());
+                                      dt.getString("DOC_No").toString());
             throw ex;
         }
     }
@@ -292,17 +292,17 @@ public class Taxilla_GenerateEinvoice {
     public static DispDtls getdispatch_details(ResultSet dt) {
         try {
             DispDtls dispatch_details = new DispDtls();
-            dispatch_details.setNm(dt.getRows().get(0).get("SHIPFROM_TRDNM").toString().isEmpty() ? "" :
-                                   dt.getRows().get(0).get("SHIPFROM_TRDNM").toString());
-            dispatch_details.setAddr1(dt.getRows().get(0).get("SHIPFROM_BNO").toString() + " " +
-                                      dt.getRows().get(0).get("SHIPFROM_BNM").toString());
+            dispatch_details.setNm(dt.getString("SHIPFROM_TRDNM").toString().isEmpty() ? "" :
+                                   dt.getString("SHIPFROM_TRDNM").toString());
+            dispatch_details.setAddr1(dt.getString("SHIPFROM_BNO").toString() + " " +
+                                      dt.getString("SHIPFROM_BNM").toString());
             dispatch_details.setAddr2(null);
-            dispatch_details.setLoc(dt.getRows().get(0).get("SHIPFROM_LOC").toString().isEmpty() ? "" :
-                                    dt.getRows().get(0).get("SHIPFROM_LOC").toString());
-            dispatch_details.setPin(Integer.parseInt(dt.getRows().get(0).get("SHIPFROM_PIN").toString().isEmpty() ?
-                                                     "201301" : dt.getRows().get(0).get("SHIPFROM_PIN").toString()));
-            dispatch_details.setStcd(dt.getRows().get(0).get("SHIPFROM_STCD").toString().isEmpty() ? "" :
-                                     dt.getRows().get(0).get("SHIPFROM_STCD").toString());
+            dispatch_details.setLoc(dt.getString("SHIPFROM_LOC").toString().isEmpty() ? "" :
+                                    dt.getString("SHIPFROM_LOC").toString());
+            dispatch_details.setPin(Integer.parseInt(dt.getString("SHIPFROM_PIN").toString().isEmpty() ?
+                                                     "201301" : dt.getString("SHIPFROM_PIN").toString()));
+            dispatch_details.setStcd(dt.getString("SHIPFROM_STCD").toString().isEmpty() ? "" :
+                                     dt.getString("SHIPFROM_STCD").toString());
             return dispatch_details;
         } catch (Exception ex) {
             ClsDynamic.WriteLog("Error from dispatch_details " + ex.getMessage(),
@@ -864,6 +864,54 @@ public class Taxilla_GenerateEinvoice {
 
     public class DispDtls {
         private String nm;
+
+        public void setNm(String nm) {
+            this.nm = nm;
+        }
+
+        public String getNm() {
+            return nm;
+        }
+
+        public void setAddr1(String addr1) {
+            this.addr1 = addr1;
+        }
+
+        public String getAddr1() {
+            return addr1;
+        }
+
+        public void setAddr2(String addr2) {
+            this.addr2 = addr2;
+        }
+
+        public String getAddr2() {
+            return addr2;
+        }
+
+        public void setLoc(String loc) {
+            this.loc = loc;
+        }
+
+        public String getLoc() {
+            return loc;
+        }
+
+        public void setPin(int pin) {
+            this.pin = pin;
+        }
+
+        public int getPin() {
+            return pin;
+        }
+
+        public void setStcd(String stcd) {
+            this.stcd = stcd;
+        }
+
+        public String getStcd() {
+            return stcd;
+        }
         private String addr1;
         private String addr2;
         private String loc;
@@ -877,6 +925,70 @@ public class Taxilla_GenerateEinvoice {
         private String gstin;
         private String lglNm;
         private String trdNm;
+
+        public void setGstin(String gstin) {
+            this.gstin = gstin;
+        }
+
+        public String getGstin() {
+            return gstin;
+        }
+
+        public void setLglNm(String lglNm) {
+            this.lglNm = lglNm;
+        }
+
+        public String getLglNm() {
+            return lglNm;
+        }
+
+        public void setTrdNm(String trdNm) {
+            this.trdNm = trdNm;
+        }
+
+        public String getTrdNm() {
+            return trdNm;
+        }
+
+        public void setAddr1(String addr1) {
+            this.addr1 = addr1;
+        }
+
+        public String getAddr1() {
+            return addr1;
+        }
+
+        public void setAddr2(String addr2) {
+            this.addr2 = addr2;
+        }
+
+        public String getAddr2() {
+            return addr2;
+        }
+
+        public void setLoc(String loc) {
+            this.loc = loc;
+        }
+
+        public String getLoc() {
+            return loc;
+        }
+
+        public void setPin(int pin) {
+            this.pin = pin;
+        }
+
+        public int getPin() {
+            return pin;
+        }
+
+        public void setStcd(String stcd) {
+            this.stcd = stcd;
+        }
+
+        public String getStcd() {
+            return stcd;
+        }
         private String addr1;
         private String addr2;
         private String loc;
@@ -889,6 +1001,30 @@ public class Taxilla_GenerateEinvoice {
     public class BchDtls {
         private String nm;
         private String expdt;
+
+        public void setNm(String nm) {
+            this.nm = nm;
+        }
+
+        public String getNm() {
+            return nm;
+        }
+
+        public void setExpdt(String expdt) {
+            this.expdt = expdt;
+        }
+
+        public String getExpdt() {
+            return expdt;
+        }
+
+        public void setWrDt(String wrDt) {
+            this.wrDt = wrDt;
+        }
+
+        public String getWrDt() {
+            return wrDt;
+        }
         private String wrDt;
 
         // Getters and Setters
@@ -897,6 +1033,22 @@ public class Taxilla_GenerateEinvoice {
     public class AttribDtl {
         private String nm;
         private String val;
+
+        public void setNm(String nm) {
+            this.nm = nm;
+        }
+
+        public String getNm() {
+            return nm;
+        }
+
+        public void setVal(String val) {
+            this.val = val;
+        }
+
+        public String getVal() {
+            return val;
+        }
 
         // Getters and Setters
     }
@@ -911,6 +1063,94 @@ public class Taxilla_GenerateEinvoice {
         private double discount;
         private double othChrg;
         private double rndOffAmt;
+
+        public void setAssVal(double assVal) {
+            this.assVal = assVal;
+        }
+
+        public double getAssVal() {
+            return assVal;
+        }
+
+        public void setCgstVal(double cgstVal) {
+            this.cgstVal = cgstVal;
+        }
+
+        public double getCgstVal() {
+            return cgstVal;
+        }
+
+        public void setSgstVal(double sgstVal) {
+            this.sgstVal = sgstVal;
+        }
+
+        public double getSgstVal() {
+            return sgstVal;
+        }
+
+        public void setIgstVal(double igstVal) {
+            this.igstVal = igstVal;
+        }
+
+        public double getIgstVal() {
+            return igstVal;
+        }
+
+        public void setCesVal(double cesVal) {
+            this.cesVal = cesVal;
+        }
+
+        public double getCesVal() {
+            return cesVal;
+        }
+
+        public void setStCesVal(double stCesVal) {
+            this.stCesVal = stCesVal;
+        }
+
+        public double getStCesVal() {
+            return stCesVal;
+        }
+
+        public void setDiscount(double discount) {
+            this.discount = discount;
+        }
+
+        public double getDiscount() {
+            return discount;
+        }
+
+        public void setOthChrg(double othChrg) {
+            this.othChrg = othChrg;
+        }
+
+        public double getOthChrg() {
+            return othChrg;
+        }
+
+        public void setRndOffAmt(double rndOffAmt) {
+            this.rndOffAmt = rndOffAmt;
+        }
+
+        public double getRndOffAmt() {
+            return rndOffAmt;
+        }
+
+        public void setTotInvVal(double totInvVal) {
+            this.totInvVal = totInvVal;
+        }
+
+        public double getTotInvVal() {
+            return totInvVal;
+        }
+
+        public void setTotInvValFc(double totInvValFc) {
+            this.totInvValFc = totInvValFc;
+        }
+
+        public double getTotInvValFc() {
+            return totInvValFc;
+        }
         private double totInvVal;
         private double totInvValFc;
 
@@ -923,6 +1163,94 @@ public class Taxilla_GenerateEinvoice {
         private String mode;
         private String fininsbr;
         private String payterm;
+
+        public void setNm(String nm) {
+            this.nm = nm;
+        }
+
+        public String getNm() {
+            return nm;
+        }
+
+        public void setAccdet(String accdet) {
+            this.accdet = accdet;
+        }
+
+        public String getAccdet() {
+            return accdet;
+        }
+
+        public void setMode(String mode) {
+            this.mode = mode;
+        }
+
+        public String getMode() {
+            return mode;
+        }
+
+        public void setFininsbr(String fininsbr) {
+            this.fininsbr = fininsbr;
+        }
+
+        public String getFininsbr() {
+            return fininsbr;
+        }
+
+        public void setPayterm(String payterm) {
+            this.payterm = payterm;
+        }
+
+        public String getPayterm() {
+            return payterm;
+        }
+
+        public void setPayinstr(String payinstr) {
+            this.payinstr = payinstr;
+        }
+
+        public String getPayinstr() {
+            return payinstr;
+        }
+
+        public void setCrtrn(String crtrn) {
+            this.crtrn = crtrn;
+        }
+
+        public String getCrtrn() {
+            return crtrn;
+        }
+
+        public void setDirdr(String dirdr) {
+            this.dirdr = dirdr;
+        }
+
+        public String getDirdr() {
+            return dirdr;
+        }
+
+        public void setCrday(int crday) {
+            this.crday = crday;
+        }
+
+        public int getCrday() {
+            return crday;
+        }
+
+        public void setPaidamt(double paidamt) {
+            this.paidamt = paidamt;
+        }
+
+        public double getPaidamt() {
+            return paidamt;
+        }
+
+        public void setPaymtdue(double paymtdue) {
+            this.paymtdue = paymtdue;
+        }
+
+        public double getPaymtdue() {
+            return paymtdue;
+        }
         private String payinstr;
         private String crtrn;
         private String dirdr;
@@ -940,6 +1268,37 @@ public class Taxilla_GenerateEinvoice {
         private List<ContrDtl> contrDtls;
 
         // Getters and Setters
+        public void setInvRm(String invRm) {
+            this.invRm = invRm;
+        }
+
+        public String getInvRm() {
+            return invRm;
+        }
+
+        public void setDocPerdDtls(Taxilla_GenerateEinvoice.DocPerdDtls docPerdDtls) {
+            this.docPerdDtls = docPerdDtls;
+        }
+
+        public Taxilla_GenerateEinvoice.DocPerdDtls getDocPerdDtls() {
+            return docPerdDtls;
+        }
+
+        public void setPrecDocDtls(List<Taxilla_GenerateEinvoice.PrecDocDtl> precDocDtls) {
+            this.precDocDtls = precDocDtls;
+        }
+
+        public List<Taxilla_GenerateEinvoice.PrecDocDtl> getPrecDocDtls() {
+            return precDocDtls;
+        }
+
+        public void setContrDtls(List<Taxilla_GenerateEinvoice.ContrDtl> contrDtls) {
+            this.contrDtls = contrDtls;
+        }
+
+        public List<Taxilla_GenerateEinvoice.ContrDtl> getContrDtls() {
+            return contrDtls;
+        }
     }
 
     public class ContrDtl {
@@ -953,12 +1312,34 @@ public class Taxilla_GenerateEinvoice {
         private String poRefDt;
 
         // Getters and Setters
+        public void setTendrefr(String tendrefr) {
+            this.tendrefr = tendrefr;
+        }
+
+        public String getTendrefr() {
+            return tendrefr;
+        }
     }
 
     public class DocPerdDtls {
         private String invStDt;
         private String invEndDt;
 
+        public void setInvStDt(String invStDt) {
+            this.invStDt = invStDt;
+        }
+
+        public String getInvStDt() {
+            return invStDt;
+        }
+
+        public void setInvEndDt(String invEndDt) {
+            this.invEndDt = invEndDt;
+        }
+
+        public String getInvEndDt() {
+            return invEndDt;
+        }
         // Getters and Setters
     }
 
@@ -966,6 +1347,30 @@ public class Taxilla_GenerateEinvoice {
         private String invNo;
         private String invDt;
         private String othRefNo;
+
+        public void setInvNo(String invNo) {
+            this.invNo = invNo;
+        }
+
+        public String getInvNo() {
+            return invNo;
+        }
+
+        public void setInvDt(String invDt) {
+            this.invDt = invDt;
+        }
+
+        public String getInvDt() {
+            return invDt;
+        }
+
+        public void setOthRefNo(String othRefNo) {
+            this.othRefNo = othRefNo;
+        }
+
+        public String getOthRefNo() {
+            return othRefNo;
+        }
 
         // Getters and Setters
     }
@@ -975,6 +1380,30 @@ public class Taxilla_GenerateEinvoice {
         private String docs;
         private String info;
 
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setDocs(String docs) {
+            this.docs = docs;
+        }
+
+        public String getDocs() {
+            return docs;
+        }
+
+        public void setInfo(String info) {
+            this.info = info;
+        }
+
+        public String getInfo() {
+            return info;
+        }
+
         // Getters and Setters
     }
 
@@ -982,6 +1411,62 @@ public class Taxilla_GenerateEinvoice {
         private String shipBNo;
         private String shipBDt;
         private String port;
+
+        public void setShipBNo(String shipBNo) {
+            this.shipBNo = shipBNo;
+        }
+
+        public String getShipBNo() {
+            return shipBNo;
+        }
+
+        public void setShipBDt(String shipBDt) {
+            this.shipBDt = shipBDt;
+        }
+
+        public String getShipBDt() {
+            return shipBDt;
+        }
+
+        public void setPort(String port) {
+            this.port = port;
+        }
+
+        public String getPort() {
+            return port;
+        }
+
+        public void setRefClm(String refClm) {
+            this.refClm = refClm;
+        }
+
+        public String getRefClm() {
+            return refClm;
+        }
+
+        public void setForCur(String forCur) {
+            this.forCur = forCur;
+        }
+
+        public String getForCur() {
+            return forCur;
+        }
+
+        public void setCntCode(String cntCode) {
+            this.cntCode = cntCode;
+        }
+
+        public String getCntCode() {
+            return cntCode;
+        }
+
+        public void setExpDuty(Object expDuty) {
+            this.expDuty = expDuty;
+        }
+
+        public Object getExpDuty() {
+            return expDuty;
+        }
         private String refClm;
         private String forCur;
         private String cntCode;
@@ -993,6 +1478,70 @@ public class Taxilla_GenerateEinvoice {
     public class EwbDtls {
         private String transid;
         private String transname;
+
+        public void setTransid(String transid) {
+            this.transid = transid;
+        }
+
+        public String getTransid() {
+            return transid;
+        }
+
+        public void setTransname(String transname) {
+            this.transname = transname;
+        }
+
+        public String getTransname() {
+            return transname;
+        }
+
+        public void setDistance(int distance) {
+            this.distance = distance;
+        }
+
+        public int getDistance() {
+            return distance;
+        }
+
+        public void setTransdocno(String transdocno) {
+            this.transdocno = transdocno;
+        }
+
+        public String getTransdocno() {
+            return transdocno;
+        }
+
+        public void setTransdocDt(String transdocDt) {
+            this.transdocDt = transdocDt;
+        }
+
+        public String getTransdocDt() {
+            return transdocDt;
+        }
+
+        public void setVehno(String vehno) {
+            this.vehno = vehno;
+        }
+
+        public String getVehno() {
+            return vehno;
+        }
+
+        public void setVehtype(String vehtype) {
+            this.vehtype = vehtype;
+        }
+
+        public String getVehtype() {
+            return vehtype;
+        }
+
+        public void setTransMode(String transMode) {
+            this.transMode = transMode;
+        }
+
+        public String getTransMode() {
+            return transMode;
+        }
         private int distance;
         private String transdocno;
         private String transdocDt;
@@ -1006,6 +1555,246 @@ public class Taxilla_GenerateEinvoice {
     public class ItemList {
         private String slNo;
         private String prdDesc;
+
+        public void setSlNo(String slNo) {
+            this.slNo = slNo;
+        }
+
+        public String getSlNo() {
+            return slNo;
+        }
+
+        public void setPrdDesc(String prdDesc) {
+            this.prdDesc = prdDesc;
+        }
+
+        public String getPrdDesc() {
+            return prdDesc;
+        }
+
+        public void setIsServc(String isServc) {
+            this.isServc = isServc;
+        }
+
+        public String getIsServc() {
+            return isServc;
+        }
+
+        public void setHsnCd(String hsnCd) {
+            this.hsnCd = hsnCd;
+        }
+
+        public String getHsnCd() {
+            return hsnCd;
+        }
+
+        public void setBarcde(String barcde) {
+            this.barcde = barcde;
+        }
+
+        public String getBarcde() {
+            return barcde;
+        }
+
+        public void setQty(double qty) {
+            this.qty = qty;
+        }
+
+        public double getQty() {
+            return qty;
+        }
+
+        public void setFreeQty(int freeQty) {
+            this.freeQty = freeQty;
+        }
+
+        public int getFreeQty() {
+            return freeQty;
+        }
+
+        public void setUnit(String unit) {
+            this.unit = unit;
+        }
+
+        public String getUnit() {
+            return unit;
+        }
+
+        public void setUnitPrice(double unitPrice) {
+            this.unitPrice = unitPrice;
+        }
+
+        public double getUnitPrice() {
+            return unitPrice;
+        }
+
+        public void setTotAmt(double totAmt) {
+            this.totAmt = totAmt;
+        }
+
+        public double getTotAmt() {
+            return totAmt;
+        }
+
+        public void setDiscount(double discount) {
+            this.discount = discount;
+        }
+
+        public double getDiscount() {
+            return discount;
+        }
+
+        public void setPreTaxVal(double preTaxVal) {
+            this.preTaxVal = preTaxVal;
+        }
+
+        public double getPreTaxVal() {
+            return preTaxVal;
+        }
+
+        public void setAssAmt(double assAmt) {
+            this.assAmt = assAmt;
+        }
+
+        public double getAssAmt() {
+            return assAmt;
+        }
+
+        public void setGstRt(double gstRt) {
+            this.gstRt = gstRt;
+        }
+
+        public double getGstRt() {
+            return gstRt;
+        }
+
+        public void setIgstAmt(double igstAmt) {
+            this.igstAmt = igstAmt;
+        }
+
+        public double getIgstAmt() {
+            return igstAmt;
+        }
+
+        public void setCgstAmt(double cgstAmt) {
+            this.cgstAmt = cgstAmt;
+        }
+
+        public double getCgstAmt() {
+            return cgstAmt;
+        }
+
+        public void setSgstAmt(double sgstAmt) {
+            this.sgstAmt = sgstAmt;
+        }
+
+        public double getSgstAmt() {
+            return sgstAmt;
+        }
+
+        public void setCesRt(double cesRt) {
+            this.cesRt = cesRt;
+        }
+
+        public double getCesRt() {
+            return cesRt;
+        }
+
+        public void setCesAmt(double cesAmt) {
+            this.cesAmt = cesAmt;
+        }
+
+        public double getCesAmt() {
+            return cesAmt;
+        }
+
+        public void setCesNonAdvlAmt(double cesNonAdvlAmt) {
+            this.cesNonAdvlAmt = cesNonAdvlAmt;
+        }
+
+        public double getCesNonAdvlAmt() {
+            return cesNonAdvlAmt;
+        }
+
+        public void setStateCesRt(double stateCesRt) {
+            this.stateCesRt = stateCesRt;
+        }
+
+        public double getStateCesRt() {
+            return stateCesRt;
+        }
+
+        public void setStateCesAmt(double stateCesAmt) {
+            this.stateCesAmt = stateCesAmt;
+        }
+
+        public double getStateCesAmt() {
+            return stateCesAmt;
+        }
+
+        public void setStateCesNonAdvlAmt(double stateCesNonAdvlAmt) {
+            this.stateCesNonAdvlAmt = stateCesNonAdvlAmt;
+        }
+
+        public double getStateCesNonAdvlAmt() {
+            return stateCesNonAdvlAmt;
+        }
+
+        public void setOthChrg(double othChrg) {
+            this.othChrg = othChrg;
+        }
+
+        public double getOthChrg() {
+            return othChrg;
+        }
+
+        public void setTotItemVal(double totItemVal) {
+            this.totItemVal = totItemVal;
+        }
+
+        public double getTotItemVal() {
+            return totItemVal;
+        }
+
+        public void setOrdLineRef(String ordLineRef) {
+            this.ordLineRef = ordLineRef;
+        }
+
+        public String getOrdLineRef() {
+            return ordLineRef;
+        }
+
+        public void setOrgCntry(String orgCntry) {
+            this.orgCntry = orgCntry;
+        }
+
+        public String getOrgCntry() {
+            return orgCntry;
+        }
+
+        public void setPrdSlNo(String prdSlNo) {
+            this.prdSlNo = prdSlNo;
+        }
+
+        public String getPrdSlNo() {
+            return prdSlNo;
+        }
+
+        public void setBchDtls(Taxilla_GenerateEinvoice.BchDtls bchDtls) {
+            this.bchDtls = bchDtls;
+        }
+
+        public Taxilla_GenerateEinvoice.BchDtls getBchDtls() {
+            return bchDtls;
+        }
+
+        public void setAttribDtls(List<Taxilla_GenerateEinvoice.AttribDtl> attribDtls) {
+            this.attribDtls = attribDtls;
+        }
+
+        public List<Taxilla_GenerateEinvoice.AttribDtl> getAttribDtls() {
+            return attribDtls;
+        }
         private String isServc;
         private String hsnCd;
         private String barcde;
@@ -1176,6 +1965,86 @@ public class Taxilla_GenerateEinvoice {
         private String signedInvoice;
         private String signedQRCode;
         private String status;
+
+        public void setAckNo(long ackNo) {
+            this.ackNo = ackNo;
+        }
+
+        public long getAckNo() {
+            return ackNo;
+        }
+
+        public void setAckDt(String ackDt) {
+            this.ackDt = ackDt;
+        }
+
+        public String getAckDt() {
+            return ackDt;
+        }
+
+        public void setIrn(String irn) {
+            this.irn = irn;
+        }
+
+        public String getIrn() {
+            return irn;
+        }
+
+        public void setSignedInvoice(String signedInvoice) {
+            this.signedInvoice = signedInvoice;
+        }
+
+        public String getSignedInvoice() {
+            return signedInvoice;
+        }
+
+        public void setSignedQRCode(String signedQRCode) {
+            this.signedQRCode = signedQRCode;
+        }
+
+        public String getSignedQRCode() {
+            return signedQRCode;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setEwbNo(String ewbNo) {
+            this.ewbNo = ewbNo;
+        }
+
+        public String getEwbNo() {
+            return ewbNo;
+        }
+
+        public void setEwbDt(String ewbDt) {
+            this.ewbDt = ewbDt;
+        }
+
+        public String getEwbDt() {
+            return ewbDt;
+        }
+
+        public void setEwbValidTill(String ewbValidTill) {
+            this.ewbValidTill = ewbValidTill;
+        }
+
+        public String getEwbValidTill() {
+            return ewbValidTill;
+        }
+
+        public void setRemarks(Object remarks) {
+            this.remarks = remarks;
+        }
+
+        public Object getRemarks() {
+            return remarks;
+        }
         private String ewbNo;
         private String ewbDt;
         private String ewbValidTill;
@@ -1189,10 +2058,41 @@ public class Taxilla_GenerateEinvoice {
         private String errorMessage;
 
         // Getters and Setters
+        public void setErrorCode(String errorCode) {
+            this.errorCode = errorCode;
+        }
+
+        public String getErrorCode() {
+            return errorCode;
+        }
+
+        public void setErrorMessage(String errorMessage) {
+            this.errorMessage = errorMessage;
+        }
+
+        public String getErrorMessage() {
+            return errorMessage;
+        }
     }
 
     public class SuccessInfo {
         private String infCd;
+
+        public void setInfCd(String infCd) {
+            this.infCd = infCd;
+        }
+
+        public String getInfCd() {
+            return infCd;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
         private String desc;
 
         // Getters and Setters
@@ -1203,6 +2103,21 @@ public class Taxilla_GenerateEinvoice {
         private List<Desc> desc;
 
         // Getters and Setters
+        public void setInfCd(String infCd) {
+            this.infCd = infCd;
+        }
+
+        public String getInfCd() {
+            return infCd;
+        }
+
+        public void setDesc(List<Taxilla_GenerateEinvoice.Desc> desc) {
+            this.desc = desc;
+        }
+
+        public List<Taxilla_GenerateEinvoice.Desc> getDesc() {
+            return desc;
+        }
     }
 
     public class SuccessRoot {
@@ -1248,6 +2163,38 @@ public class Taxilla_GenerateEinvoice {
         private boolean success;
         private String message;
         private SuccessResult result;
+
+        public void setSuccess(boolean success) {
+            this.success = success;
+        }
+
+        public boolean isSuccess() {
+            return success;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setResult(Taxilla_GenerateEinvoice.SuccessResult result) {
+            this.result = result;
+        }
+
+        public Taxilla_GenerateEinvoice.SuccessResult getResult() {
+            return result;
+        }
+
+        public void setInfo(List<Taxilla_GenerateEinvoice.SuccessInfo2> info) {
+            this.info = info;
+        }
+
+        public List<Taxilla_GenerateEinvoice.SuccessInfo2> getInfo() {
+            return info;
+        }
         private List<SuccessInfo2> info;
 
         // Getters and Setters
@@ -1258,11 +2205,51 @@ public class Taxilla_GenerateEinvoice {
         private String ackDt;
         private String irn;
 
+        public void setAckNo(long ackNo) {
+            this.ackNo = ackNo;
+        }
+
+        public long getAckNo() {
+            return ackNo;
+        }
+
+        public void setAckDt(String ackDt) {
+            this.ackDt = ackDt;
+        }
+
+        public String getAckDt() {
+            return ackDt;
+        }
+
+        public void setIrn(String irn) {
+            this.irn = irn;
+        }
+
+        public String getIrn() {
+            return irn;
+        }
+
         // Getters and Setters
     }
 
     public class DublicateResult {
         private String infCd;
+
+        public void setInfCd(String infCd) {
+            this.infCd = infCd;
+        }
+
+        public String getInfCd() {
+            return infCd;
+        }
+
+        public void setDesc(Taxilla_GenerateEinvoice.DublicateDesc desc) {
+            this.desc = desc;
+        }
+
+        public Taxilla_GenerateEinvoice.DublicateDesc getDesc() {
+            return desc;
+        }
         private DublicateDesc desc;
 
         // Getters and Setters
@@ -1270,6 +2257,30 @@ public class Taxilla_GenerateEinvoice {
 
     public class DublicateRoot {
         private boolean success;
+
+        public void setSuccess(boolean success) {
+            this.success = success;
+        }
+
+        public boolean isSuccess() {
+            return success;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setResult(List<Taxilla_GenerateEinvoice.DublicateResult> result) {
+            this.result = result;
+        }
+
+        public List<Taxilla_GenerateEinvoice.DublicateResult> getResult() {
+            return result;
+        }
         private String message;
         private List<DublicateResult> result;
 

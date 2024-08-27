@@ -45,7 +45,7 @@ public class Taxilla_EwaybillByIrnClasses {
                         String Rdistval = DistanceResponseClass.GoogleDistAPI(Integer.parseInt(Double.parseDouble(rs.getString("BILLFROM_PIN"))), Integer.parseInt(Double.parseDouble(rs.getString("BILLTO_PIN"))));
                         calcdist = Rdistval;
                         String commandText = "UPDATE einvoice_generate_temp SET EWAY_TRANSPORTAR_DISTANCE='" + calcdist + "' WHERE DOC_NO ='" + rs.getString("DOC_No") + "'";
-                        int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection, commandText);
+                        int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection(), commandText);
                     }
                 }
 
@@ -71,7 +71,7 @@ public class Taxilla_EwaybillByIrnClasses {
                         String Rdistval = DistanceResponseClass.GoogleDistAPI(Integer.parseInt(Double.parseDouble(rs.getString("BILLFROM_PIN"))), Integer.parseInt(Double.parseDouble(rs.getString("BILLTO_PIN"))));
                         calcdist = Rdistval;
                         String commandText = "UPDATE einvoice_generate_temp SET EWAY_TRANSPORTAR_DISTANCE='" + calcdist + "' WHERE DOC_NO ='" + rs.getString("DOC_No") + "'";
-                        int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection, commandText);
+                        int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection(), commandText);
                     }
                 }
 
@@ -97,7 +97,7 @@ public class Taxilla_EwaybillByIrnClasses {
                         String Rdistval = DistanceResponseClass.GoogleDistAPI(Integer.parseInt(Double.parseDouble(rs.getString("BILLFROM_PIN"))), Integer.parseInt(Double.parseDouble(rs.getString("SHIPTO_PIN"))));
                         calcdist = Rdistval;
                         String commandText = "UPDATE einvoice_generate_temp SET EWAY_TRANSPORTAR_DISTANCE='" + calcdist + "' WHERE DOC_NO ='" + rs.getString("DOC_No") + "'";
-                        int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection, commandText);
+                        int i = DataLayer.ExecuteNonQuery(OraDBConnection.OrclConnection(), commandText);
                     }
                 }
 
@@ -127,7 +127,7 @@ public class Taxilla_EwaybillByIrnClasses {
         }
     }
 
-    public static DispDtls getdispatch_details(ResultSet rs) {
+    public static DispDtls getdispatch_details(ResultSet rs) throws SQLException {
         DispDtls dispatch_details = new DispDtls();
         dispatch_details.setNm(rs.getString("SHIPFROM_TRDNM").isEmpty() ? "" : rs.getString("SHIPFROM_TRDNM"));
         dispatch_details.setAddr1(rs.getString("SHIPFROM_BNO") + " " + rs.getString("SHIPFROM_BNM") + " " + rs.getString("SHIPFROM_FLNO") + " " + rs.getString("SHIPFROM_DST"));

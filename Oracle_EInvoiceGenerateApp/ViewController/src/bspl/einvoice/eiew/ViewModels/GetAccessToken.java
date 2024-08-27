@@ -11,8 +11,10 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import org.json.JSONObject;
+//import org.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.google.gson.JsonObject;
 
 import java.sql.ResultSet;
 
@@ -34,7 +36,7 @@ public class GetAccessToken {
 
             if (response.statusCode() == 200) {
                 InvResult = response.body();
-                JSONObject json = new JSONObject(InvResult);
+                JsonObject json = new JSONObject(InvResult);
                 if (json.getInt("Status") == 0) {
                     String ErrorMsg = "Error";
                 } else {
